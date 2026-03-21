@@ -2,10 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KE20B6Q0J8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KE20B6Q0J8');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crozier Counsel — Coming Soon</title>
-<meta name="description" content="Crozier Counsel. Strategic advisory at the intersection of technology, policy and transformation. Launching 2026.">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<meta name="description" content="Crozier Counsel — Authoritative counsel at the intersection of technology, innovation policy and economic transformation.">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #1A2332;
@@ -29,33 +37,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 35% 45%, rgba(127, 172, 200, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 65% 55%, rgba(191, 154, 58, 0.03) 0%, transparent 40%);
-    animation: ambientShift 25s ease-in-out infinite;
-  }
-
-  @keyframes ambientShift {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(-2%, 1.5%); }
-  }
-
-  .content {
-    position: relative;
-    z-index: 1;
     text-align: center;
-    padding: 40px;
+    padding: 40px 24px;
+  }
+
+  .container {
     max-width: 600px;
+    width: 100%;
   }
 
   /* Double-ring monogram */
@@ -68,8 +56,6 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 48px;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 0.3s;
   }
 
   .monogram .outer {
@@ -86,9 +72,9 @@
     border: 1px solid var(--rose);
   }
 
-  .monogram span {
+  .monogram .letters {
     font-family: 'Libre Baskerville', serif;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     letter-spacing: 2px;
     color: var(--cream);
@@ -96,122 +82,115 @@
     z-index: 1;
   }
 
-  .wordmark {
+  /* Wordmark */
+  h1 {
     font-family: 'Libre Baskerville', serif;
-    font-size: clamp(28px, 5vw, 42px);
+    font-size: 32px;
     font-weight: 700;
-    letter-spacing: clamp(4px, 1vw, 7px);
+    letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--cream);
-    line-height: 1.1;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 0.6s;
+    line-height: 1;
+    margin-bottom: 14px;
   }
 
+  /* Ribbon divider */
   .ribbon {
     display: flex;
     justify-content: center;
-    margin: 20px auto;
-    width: 44px;
+    margin: 0 auto 14px;
+    width: 40px;
     height: 3px;
-    overflow: hidden;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 0.9s;
   }
 
   .ribbon .edge { width: 20%; height: 100%; background: var(--pearl); }
   .ribbon .centre { width: 60%; height: 100%; background: var(--rose); }
 
+  /* Tagline */
   .tagline {
     font-family: 'EB Garamond', serif;
-    font-size: clamp(12px, 1.4vw, 15px);
-    letter-spacing: clamp(3px, 0.5vw, 5px);
+    font-size: 14px;
+    letter-spacing: 3.5px;
     text-transform: uppercase;
     color: var(--blue);
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 1.2s;
+    margin-bottom: 48px;
   }
 
+  /* Description */
   .description {
     font-family: 'EB Garamond', serif;
-    font-size: clamp(16px, 1.6vw, 19px);
-    line-height: 1.8;
+    font-size: 18px;
+    line-height: 1.7;
     color: var(--pearl);
-    margin-top: 40px;
     font-style: italic;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 1.5s;
+    margin-bottom: 48px;
   }
 
-  .launch-note {
+  /* Launching badge */
+  .launching {
     font-family: 'EB Garamond', serif;
-    font-size: 13px;
-    letter-spacing: 2px;
+    font-size: 12px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--gold);
-    margin-top: 48px;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 1.8s;
+    margin-bottom: 12px;
   }
 
-  .contact {
-    margin-top: 32px;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 2.1s;
-  }
-
+  /* Contact */
   .contact a {
     font-family: 'EB Garamond', serif;
     font-size: 15px;
     color: var(--blue);
     text-decoration: none;
     letter-spacing: 0.5px;
-    transition: color 0.3s;
+    transition: color 0.3s ease;
   }
 
-  .contact a:hover { color: var(--gold); }
+  .contact a:hover {
+    color: var(--gold);
+  }
 
   /* Footer */
   .footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    padding: 24px;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 2.4s;
-  }
-
-  .footer span {
+    margin-top: 64px;
     font-family: 'EB Garamond', serif;
     font-size: 11px;
     color: var(--mid-grey);
     letter-spacing: 1px;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   @media (max-width: 600px) {
-    .content { padding: 32px 24px; }
-    .monogram { width: 64px; height: 64px; margin-bottom: 36px; }
-    .monogram span { font-size: 19px; }
+    h1 {
+      font-size: 22px;
+      letter-spacing: 3px;
+    }
+
+    .monogram {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 36px;
+    }
+
+    .monogram .letters {
+      font-size: 20px;
+    }
+
+    .description {
+      font-size: 16px;
+    }
   }
 </style>
 </head>
 <body>
 
-<div class="content">
+<div class="container">
   <div class="monogram">
     <div class="outer"></div>
     <div class="inner"></div>
-    <span>CC</span>
+    <span class="letters">CC</span>
   </div>
 
-  <h1 class="wordmark">Crozier Counsel</h1>
+  <h1>Crozier Counsel</h1>
 
   <div class="ribbon">
     <div class="edge"></div>
@@ -219,21 +198,20 @@
     <div class="edge"></div>
   </div>
 
-  <p class="tagline">Strategic Advisory</p>
+  <div class="tagline">Strategic Advisory</div>
 
-  <p class="description">
-    Authoritative counsel at the intersection of technology, innovation policy and economic transformation.
-  </p>
+  <div class="description">
+    Authoritative counsel at the intersection of technology,
+    innovation policy and economic transformation.
+  </div>
 
-  <p class="launch-note">Launching 2026</p>
+  <div class="launching">Launching 2026</div>
 
   <div class="contact">
     <a href="mailto:info@croziercounsel.com">info@croziercounsel.com</a>
   </div>
-</div>
 
-<div class="footer">
-  <span>&copy; 2026 Crozier Counsel</span>
+  <div class="footer">&copy; 2026 Crozier Counsel</div>
 </div>
 
 </body>
