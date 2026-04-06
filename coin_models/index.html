@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0047)file:///Users/d.crozier1/Downloads/index_7.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Cigar Tin Coin Project: AI Model Evaluation</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>The Cigar Tin Project: AI Model Evaluation — David Crozier CBE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index_files/css2" rel="stylesheet">
 <style>
 :root{--navy:#1A2332;--enamel:#7FACC8;--gold:#BF9A3A;--gold-light:#D4B56A;--rose:#C86B75;--pearl:#B5B0A8;--cream:#FAF9F6;--cream-dark:#F0EDE6;--text-body:#2C3340;--text-muted:#6B6860;--border:#DDD9D0}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -138,7 +138,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 .modal-nav button{font-family:"JetBrains Mono",monospace;font-size:11px;padding:5px 14px;background:white;border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--navy);transition:all .15s}
 .modal-nav button:hover:not(:disabled){background:var(--navy);color:var(--cream)}
 .modal-nav button:disabled{opacity:.35;cursor:default}
-@media(max-width:640px){.main{padding:2rem 1.25rem 4rem}.header-inner{padding:1rem 1.25rem}.hero{padding:2.5rem 1.25rem 2rem}}
+@media(max-width:640px){.main{padding:2rem 1.25rem 4rem}.header-inner{padding:1rem 1.25rem}.hero{padding:2.5rem 1.25rem 2rem}.tin-layout{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -147,19 +147,19 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
   <div class="header-inner">
     <div><div class="brand-name">Crozier Counsel</div><div class="brand-sub">Strategic Advisory</div></div>
     <div class="header-rule"></div>
-    <div class="header-tag">Case Study &mdash; AI Model Evaluation</div>
+    <div class="header-tag">Case Study — AI Model Evaluation</div>
   </div>
 </header>
 
 <section class="hero">
   <div class="hero-inner">
-    <p class="hero-eyebrow">The Cigar Tin Project &mdash; April 2026</p>
+    <p class="hero-eyebrow">The Cigar Tin Project — April 2026</p>
     <h1 class="hero-title">Classifying 101 Inherited Coins Using Local AI Vision Models</h1>
     <p class="hero-subtitle">A three-model comparison of Qwen3.5, Gemma 4 and Llama 3.2 Vision, run entirely on a MacBook Pro with no cloud dependency</p>
     <div class="hero-meta">
       <span>David Crozier CBE</span>
       <span>Principal, Crozier Counsel</span>
-      <span>101 coins &nbsp;&bull;&nbsp; 202 images</span>
+      <span>101 coins &nbsp;•&nbsp; 202 images</span>
       <span>3 models evaluated</span>
       <span>Belfast, April 2026</span>
     </div>
@@ -173,25 +173,35 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 </div>
 
 <section class="section">
-  <p class="section-label">00 &mdash; Background</p>
+  <p class="section-label">00 — Background</p>
   <h2 class="section-title">The Cigar Tin</h2>
-  <p class="section-body">My wife's uncle passed away several years ago. After the house clearance, very little remained. One of the things that did was an old cigar tin, rattling with coins collected over what must have been decades. Nobody knew where they had come from, which countries, which eras, or whether any of them amounted to anything beyond loose change from a life well lived.</p>
-  <p class="section-body">The tin sat around for a while, as these things do. But the question it posed kept coming back: what exactly do we have here? A numismatist would charge for an appraisal. A collector would know at a glance. I am neither. So I decided to build something.</p>
-  <p class="section-body">This project documents how I used local AI vision models, running entirely on a MacBook in a home office in Belfast, to classify all 101 coins, identify their origin, condition and collector value, and compare the performance of three local vision models in the process. No cloud. No API costs. No specialist knowledge required.</p>
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:2rem;align-items:start;margin:1.75rem 0 0">
+    <div>
+      <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--cream-dark);aspect-ratio:3/4">
+        <img src="./index_files/cigar_tin.jpeg" alt="Henri Wintermans Long Panatella cigar tin containing the coin collection" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.style.display=&#39;none&#39;">
+      </div>
+      <p style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-top:6px">Henri Wintermans Long Panatella</p>
+    </div>
+    <div>
+      <p class="section-body" style="margin-top:0">My wife's uncle passed away several years ago. After the house clearance, very little remained. One of the things that did was an old cigar tin, rattling with coins collected over what must have been decades. Nobody knew where they had come from, which countries, which eras, or whether any of them amounted to anything beyond loose change from a life well lived.</p>
+      <p class="section-body">The tin sat around for a while, as these things do. But the question it posed kept coming back: what exactly do we have here? A numismatist would charge for an appraisal. A collector would know at a glance. I am neither. So I decided to build something.</p>
+      <p class="section-body" style="margin-bottom:0">This project documents how I used local AI vision models, running entirely on a MacBook in a home office in Belfast, to classify all 101 coins, identify their origin, condition and collector value, and compare the performance of three local vision models in the process. No cloud. No API costs. No specialist knowledge required.</p>
+    </div>
+  </div>
 </section>
 
 <hr class="divider">
 
 <section class="section">
-  <p class="section-label">01 &mdash; Methodology</p>
+  <p class="section-label">01 — Methodology</p>
   <h2 class="section-title">Pipeline Design and Model Selection</h2>
-  <p class="section-body">The pipeline was built in five logical stages. First, 202 JPEG images were captured via MacBook webcam using Photo Booth, both sides of each coin photographed in sequence. Photo Booth saves files with system-generated GUID filenames, so a Python script sorted them by modification time and renamed them sequentially to <code style="font-family:'JetBrains Mono',monospace;font-size:14px;background:var(--cream-dark);padding:1px 5px;border-radius:3px">coin_001_A.jpeg</code> through <code style="font-family:'JetBrains Mono',monospace;font-size:14px;background:var(--cream-dark);padding:1px 5px;border-radius:3px">coin_101_B.jpeg</code>.</p>
-  <p class="section-body">A structured prompt instructed each model to act as an expert numismatist and return a JSON object covering 19 fields including country, denomination, year, Sheldon condition grade, metal composition, collector interest, and estimated value range. All three models were run via <a href="https://ollama.com" style="color:var(--gold)">Ollama</a> on the MacBook Pro, with each model completing all 101 coins in a single pass before switching. This kept each model fully resident in the 24GB unified memory and avoided costly model-swap overhead. Results were saved after every coin, allowing the pipeline to resume from any interruption.</p>
+  <p class="section-body">The pipeline was built in five logical stages. First, 202 JPEG images were captured via MacBook webcam using Photo Booth, both sides of each coin photographed in sequence. Photo Booth saves files with system-generated GUID filenames, so a Python script sorted them by modification time and renamed them sequentially to <code style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:14px;background:var(--cream-dark);padding:1px 5px;border-radius:3px">coin_001_A.jpeg</code> through <code style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:14px;background:var(--cream-dark);padding:1px 5px;border-radius:3px">coin_101_B.jpeg</code>.</p>
+  <p class="section-body">A structured prompt instructed each model to act as an expert numismatist and return a JSON object covering 19 fields including country, denomination, year, Sheldon condition grade, metal composition, collector interest, and estimated value range. All three models were run via <a href="https://ollama.com/" style="color:var(--gold)">Ollama</a> on the MacBook Pro, with each model completing all 101 coins in a single pass before switching. This kept each model fully resident in the 24GB unified memory and avoided costly model-swap overhead. Results were saved after every coin, allowing the pipeline to resume from any interruption.</p>
   <p class="section-body">The JSON parser was written to handle markdown fences, prose wrapping, and partial JSON, extracting a valid object from each response regardless of formatting. This proved essential: Gemma initially wrapped all output in markdown code fences, and Llama produced two distinct corruption patterns that required a multi-stage parser to resolve. Additionally, Llama uses a different API endpoint to the other two models and can only accept one image per message, requiring each coin to be submitted as a two-turn conversation rather than a single prompt.</p>
 
   <div class="model-grid" style="margin-top:1.5rem;margin-bottom:1.75rem">
     <div class="model-card qwen">
-      <span class="model-label qwen">Model A &mdash; Qwen</span>
+      <span class="model-label qwen">Model A — Qwen</span>
       <p class="model-name">Qwen3.5:9b</p>
       <div class="model-stat"><span>Developer</span><b>Alibaba Cloud</b></div>
       <div class="model-stat"><span>Size on disk</span><b>6.6 GB</b></div>
@@ -200,7 +210,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
       <p style="font-size:14px;color:var(--text-muted);margin-top:.75rem;line-height:1.6">Qwen3.5 is Alibaba's third-generation multimodal family, released in early 2026. The 9B variant offers a strong balance of vision capability and inference speed on consumer hardware, with a class-leading 256K context window. Selected as a well-regarded open-weight alternative to proprietary vision APIs, with particular strength in structured output generation. Delivered 100% field completion with zero parse errors.</p>
     </div>
     <div class="model-card gemma">
-      <span class="model-label gemma">Model B &mdash; Gemma</span>
+      <span class="model-label gemma">Model B — Gemma</span>
       <p class="model-name">Gemma4:e4b</p>
       <div class="model-stat"><span>Developer</span><b>Google DeepMind</b></div>
       <div class="model-stat"><span>Size on disk</span><b>9.6 GB</b></div>
@@ -209,7 +219,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
       <p style="font-size:14px;color:var(--text-muted);margin-top:.75rem;line-height:1.6">Gemma 4 is Google DeepMind's open-weight model family for efficient on-device deployment. The e4b variant is a 4-bit quantised build optimised for Apple Silicon. Included as a direct Google-provenance comparator, allowing results to be set against what a paid Gemini API call would return from the same model lineage, without transmitting data off-device. Fastest of the three at 54.7 seconds per coin.</p>
     </div>
     <div class="model-card llama">
-      <span class="model-label llama">Model C &mdash; Llama</span>
+      <span class="model-label llama">Model C — Llama</span>
       <p class="model-name">Llama3.2-vision:11b</p>
       <div class="model-stat"><span>Developer</span><b>Meta AI</b></div>
       <div class="model-stat"><span>Size on disk</span><b>7.9 GB</b></div>
@@ -221,7 +231,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 
   <div class="model-grid">
     <div class="model-card qwen">
-      <span class="model-label qwen">Model A &mdash; Qwen</span>
+      <span class="model-label qwen">Model A — Qwen</span>
       <p class="model-name">Results at a glance</p>
       <div class="model-stat"><span>Average response time</span><b>60.3 s</b></div>
       <div class="model-stat"><span>Most common grade</span><b>G-4 (87% of coins)</b></div>
@@ -230,7 +240,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
       <div class="model-stat"><span>Passes required</span><b>1</b></div>
     </div>
     <div class="model-card gemma">
-      <span class="model-label gemma">Model B &mdash; Gemma</span>
+      <span class="model-label gemma">Model B — Gemma</span>
       <p class="model-name">Results at a glance</p>
       <div class="model-stat"><span>Average response time</span><b>54.7 s</b></div>
       <div class="model-stat"><span>Most common grade</span><b>VF-20 (46% of coins)</b></div>
@@ -239,7 +249,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
       <div class="model-stat"><span>Passes required</span><b>1</b></div>
     </div>
     <div class="model-card llama">
-      <span class="model-label llama">Model C &mdash; Llama</span>
+      <span class="model-label llama">Model C — Llama</span>
       <p class="model-name">Results at a glance</p>
       <div class="model-stat"><span>Avg response (non-zero)</span><b>56.0 s</b></div>
       <div class="model-stat"><span>Most common grade</span><b>MS-65 (71% of coins)</b></div>
@@ -253,7 +263,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 <hr class="divider">
 
 <section class="section">
-  <p class="section-label">02 &mdash; Results</p>
+  <p class="section-label">02 — Results</p>
   <h2 class="section-title">Agreement Rates by Field</h2>
   <p class="section-body">Agreement rates below reflect two-model comparison between Qwen and Gemma, the two models that completed the dataset without reliability anomalies. Llama's results are analysed separately in the findings section. Adding Llama as a third comparator did not improve any field's agreement rate.</p>
   <div class="stats-grid">
@@ -267,7 +277,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 <hr class="divider">
 
 <section class="section">
-  <p class="section-label">03 &mdash; Key Findings</p>
+  <p class="section-label">03 — Key Findings</p>
   <h2 class="section-title">What the Data Tells Us</h2>
 
   <div class="finding"><span class="finding-code fc-green">F 1</span><p class="finding-text"><strong>Country identification is the most reliable field at 81%.</strong> Most disagreements between Qwen and Gemma involved colonial or dependency attributions, for example British India versus United Kingdom, attributable to labelling ambiguity rather than genuine misidentification. Llama's country accuracy was considerably lower, with 37 mismatches including egregious errors such as Czech Republic for Bulgaria, Monaco for Brazil, and Canada for France.</p></div>
@@ -293,11 +303,11 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 <hr class="divider">
 
 <section class="section">
-  <p class="section-label">04 &mdash; Build Log</p>
+  <p class="section-label">04 — Build Log</p>
   <h2 class="section-title">Trial, Error and Iteration</h2>
   <p class="section-body">Building the pipeline was not without friction. The following log documents each problem encountered and how it was resolved. The pattern is itself illustrative of how practical AI projects actually develop: the model is rarely the source of difficulty.</p>
 
-  <div class="iter-item"><span class="iter-num">Issue 1</span><p class="iter-problem">TextEdit saved the Python script as Rich Text Format</p><p class="iter-fix">TextEdit defaults to RTF, causing Python to throw a SyntaxError on the RTF header. Fixed by switching to Format > Make Plain Text before pasting code, and setting Plain Text as the default in TextEdit preferences.</p></div>
+  <div class="iter-item"><span class="iter-num">Issue 1</span><p class="iter-problem">TextEdit saved the Python script as Rich Text Format</p><p class="iter-fix">TextEdit defaults to RTF, causing Python to throw a SyntaxError on the RTF header. Fixed by switching to Format &gt; Make Plain Text before pasting code, and setting Plain Text as the default in TextEdit preferences.</p></div>
 
   <div class="iter-item"><span class="iter-num">Issue 2</span><p class="iter-problem">Photo Booth saved all 202 images with GUID filenames</p><p class="iter-fix">A Python script sorted files by modification time and renamed them sequentially to coin_001_A.jpeg through coin_101_B.jpeg, with a dry-run mode to verify pairings before committing.</p></div>
 
@@ -324,7 +334,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 <hr class="divider">
 
 <section class="section">
-  <p class="section-label">05 &mdash; Data Explorer</p>
+  <p class="section-label">05 — Data Explorer</p>
   <h2 class="section-title">Coin-by-Coin Results</h2>
   <p class="section-body">Select any coin to view source images alongside a field-by-field comparison of all three models' outputs.</p>
   <div class="table-controls">
@@ -369,7 +379,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
       </select>
     </div>
     <div class="control-group" style="margin-left:auto">
-      <span id="resultCount" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted)"></span>
+      <span id="resultCount" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:11px;color:var(--text-muted)">101 coins</span>
     </div>
   </div>
   <div class="table-wrap">
@@ -379,22 +389,22 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
         <th>Qwen</th><th>Gemma</th><th>Llama</th>
         <th class="center">Ctry</th><th class="center">Year</th>
         <th class="center">Denom.</th><th class="center">Cond.</th>
-        <th class="center">&Delta;</th><th class="center">View</th>
+        <th class="center">Δ</th><th class="center">View</th>
       </tr></thead>
-      <tbody id="tableBody"></tbody>
+      <tbody id="tableBody"><tr><td><span class="coin-id">coin_001</span></td><td>United Kingdom</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Ten Pence</td><td style="font-family:monospace;font-size:12px">1996</td><td><span class="grade-badge gb-q">G-4</span></td><td><span class="grade-badge gb-g">VF-20</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(0)">View</button></td></tr><tr><td><span class="coin-id">coin_002</span></td><td>Bulgaria</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">20 Stotinki</td><td style="font-family:monospace;font-size:12px">1999</td><td><span class="grade-badge gb-q">G-4</span></td><td><span class="grade-badge gb-g">VF-25</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(1)">View</button></td></tr><tr><td><span class="coin-id">coin_003</span></td><td>Ireland</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">5 Pence</td><td style="font-family:monospace;font-size:12px">1970</td><td><span class="grade-badge gb-q">G-4</span></td><td><span class="grade-badge gb-g">VF-20</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(2)">View</button></td></tr><tr><td><span class="coin-id">coin_004</span></td><td>Brazil</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">1 Real</td><td style="font-family:monospace;font-size:12px">2011</td><td><span class="grade-badge gb-q">MS-63</span></td><td><span class="grade-badge gb-g">VF-20</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(3)">View</button></td></tr><tr><td><span class="coin-id">coin_005</span></td><td>Croatia</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">2</td><td style="font-family:monospace;font-size:12px">2016</td><td><span class="grade-badge gb-q">MS-63</span></td><td><span class="grade-badge gb-g">XF-20</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(4)">View</button></td></tr><tr><td><span class="coin-id">coin_006</span></td><td>Brazil</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">50 Centavos</td><td style="font-family:monospace;font-size:12px">2009</td><td><span class="grade-badge gb-q">VF-30</span></td><td><span class="grade-badge gb-g">VF-20</span></td><td><span class="grade-badge gb-l">MS-60</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(5)">View</button></td></tr><tr><td><span class="coin-id">coin_007</span></td><td>Canada</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Quarter</td><td style="font-family:monospace;font-size:12px">1974</td><td><span class="grade-badge gb-q">G-4</span></td><td><span class="grade-badge gb-g">VF-25</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(6)">View</button></td></tr><tr><td><span class="coin-id">coin_008</span></td><td>Ireland</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">1 Shilling</td><td style="font-family:monospace;font-size:12px">1964</td><td><span class="grade-badge gb-q">G-4</span></td><td><span class="grade-badge gb-g">VF-20</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(7)">View</button></td></tr><tr><td><span class="coin-id">coin_009</span></td><td>Belgium</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">1 Franc</td><td style="font-family:monospace;font-size:12px">1953</td><td><span class="grade-badge gb-q">G-4</span></td><td><span class="grade-badge gb-g">VG-15</span></td><td><span class="grade-badge gb-l">G-4</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(8)">View</button></td></tr><tr><td><span class="coin-id">coin_010</span></td><td>United Kingdom</td><td style="color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Two Shillings</td><td style="font-family:monospace;font-size:12px">1967</td><td><span class="grade-badge gb-q">G-4</span></td><td><span class="grade-badge gb-g">F-12</span></td><td><span class="grade-badge gb-l">MS-65</span></td><td class="center"><span class="agree-yes">✓</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span class="agree-no">✗</span></td><td class="center"><span style="color:var(--text-muted);font-size:12px">—</span></td><td class="center"><button class="view-btn" onclick="openModal(9)">View</button></td></tr></tbody>
     </table>
   </div>
   <div class="pagination">
-    <button class="pg-btn" id="pgPrev" onclick="changePage(-1)">&#8592; Prev</button>
-    <span class="pg-info" id="pgInfo"></span>
-    <button class="pg-btn" id="pgNext" onclick="changePage(1)">Next &#8594;</button>
+    <button class="pg-btn" id="pgPrev" onclick="changePage(-1)" disabled="">← Prev</button>
+    <span class="pg-info" id="pgInfo">Page 1 of 11</span>
+    <button class="pg-btn" id="pgNext" onclick="changePage(1)">Next →</button>
   </div>
 </section>
 
 <hr class="divider">
 
 <section class="section">
-  <p class="section-label">06 &mdash; Conclusions &amp; Recommendations</p>
+  <p class="section-label">06 — Conclusions &amp; Recommendations</p>
   <h2 class="section-title">Implications for Deployment</h2>
   <p class="section-body">The experiment demonstrates both the maturity and the current limits of open-weight vision models on a specialist classification task. Provenance identification is sufficiently reliable to automate at scale. Condition grading and denomination labelling are not, without further prompt engineering. Llama's reliability profile makes it unsuitable for production structured data pipelines on this hardware without significant additional work.</p>
   <div class="conclusions">
@@ -411,26 +421,26 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
 <hr class="divider">
 
 <section class="section">
-  <p class="section-label">07 &mdash; Cost Analysis</p>
+  <p class="section-label">07 — Cost Analysis</p>
   <h2 class="section-title">Local Inference vs Cloud API</h2>
   <p class="section-body">All three models were run locally with no cloud dependency. The comparison below uses each model's nearest commercial API equivalent: Qwen VL Plus on Alibaba Cloud, Gemini Flash 2.5 for Gemma, and Llama 3.2 Vision 11B via OpenRouter for Llama. Token estimates are based on actual image dimensions (720x480px): 425 visual tokens for Qwen VL, 258 for both Gemini and Llama (single tile at this resolution), plus approximately 700 tokens of system prompt and output schema.</p>
 
   <div class="model-grid" style="margin-top:1.5rem">
     <div class="model-card" style="border-top:3px solid var(--navy)">
-      <span class="model-label qwen">Local &mdash; MacBook Pro M5</span>
-      <p class="model-name" style="font-size:15px">Hardware: &pound;1,799 &nbsp;&middot;&nbsp; 20W inference draw</p>
-      <div class="model-stat"><span>Electricity (4.80 hrs @ 30.62p/kWh)</span><b>&pound;0.029</b></div>
-      <div class="model-stat"><span>Hardware amortisation (4yr, 8hr/day)</span><b>&pound;0.74</b></div>
+      <span class="model-label qwen">Local — MacBook Pro M5</span>
+      <p class="model-name" style="font-size:15px">Hardware: £1,799 &nbsp;·&nbsp; 20W inference draw</p>
+      <div class="model-stat"><span>Electricity (4.80 hrs @ 30.62p/kWh)</span><b>£0.029</b></div>
+      <div class="model-stat"><span>Hardware amortisation (4yr, 8hr/day)</span><b>£0.74</b></div>
       <div class="model-stat"><span>Total (marginal, electricity only)</span><b>2.9p</b></div>
       <div class="model-stat"><span>Total (including amortisation)</span><b>77p</b></div>
-      <div class="model-stat"><span>Data privacy</span><b>Complete &mdash; on device</b></div>
+      <div class="model-stat"><span>Data privacy</span><b>Complete — on device</b></div>
     </div>
     <div class="model-card" style="border-top:3px solid var(--gold)">
-      <span class="model-label llama">Cloud &mdash; Paid API Tokens</span>
+      <span class="model-label llama">Cloud — Paid API Tokens</span>
       <p class="model-name" style="font-size:15px">Qwen VL Plus &nbsp;+&nbsp; Gemini Flash 2.5 &nbsp;+&nbsp; Llama 3.2 Vision</p>
-      <div class="model-stat"><span>Qwen VL Plus (Alibaba Cloud)</span><b>&pound;0.036</b></div>
-      <div class="model-stat"><span>Gemini Flash 2.5 (Google AI)</span><b>&pound;0.032</b></div>
-      <div class="model-stat"><span>Llama 3.2 Vision 11B (OpenRouter)</span><b>&pound;0.006</b></div>
+      <div class="model-stat"><span>Qwen VL Plus (Alibaba Cloud)</span><b>£0.036</b></div>
+      <div class="model-stat"><span>Gemini Flash 2.5 (Google AI)</span><b>£0.032</b></div>
+      <div class="model-stat"><span>Llama 3.2 Vision 11B (OpenRouter)</span><b>£0.006</b></div>
       <div class="model-stat"><span>Combined total, all three models</span><b>7.4p</b></div>
       <div class="model-stat"><span>Data privacy</span><b>Images leave device</b></div>
     </div>
@@ -440,7 +450,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
     <div class="finding"><span class="finding-code fc-blue">C 1</span><p class="finding-text"><strong>If the MacBook is already owned, local inference costs less than the cloud equivalent.</strong> The marginal electricity cost across all three models is 2.9p. The equivalent cloud API bill is 7.4p. Both figures are negligible in absolute terms, but the privacy advantage of on-device processing is not.</p></div>
     <div class="finding"><span class="finding-code fc-amber">C 2</span><p class="finding-text"><strong>Cloud wins on total cost of ownership at this scale.</strong> Including hardware amortisation, local inference costs 77p for 101 coins versus 7.4p in the cloud. The M5 would need to process approximately 2.45 million coin images before the hardware cost pays back against equivalent cloud API spend.</p></div>
     <div class="finding"><span class="finding-code fc-green">C 3</span><p class="finding-text"><strong>Privacy is the decisive local advantage at any scale.</strong> For a numismatic catalogue of personal or commercial sensitivity, coin images and the story behind them stay on the device. Cloud APIs transmit images to third-party servers. For a family collection this distinction was the starting point, not an afterthought.</p></div>
-    <div class="finding"><span class="finding-code fc-blue">C 4</span><p class="finding-text"><strong>Llama is the cheapest cloud option by a significant margin despite being the weakest performer.</strong> At $0.049 per million tokens via OpenRouter, its cloud equivalent costs &pound;0.006 for this experiment versus &pound;0.036 for Qwen. Price and quality do not correlate in this comparison.</p></div>
+    <div class="finding"><span class="finding-code fc-blue">C 4</span><p class="finding-text"><strong>Llama is the cheapest cloud option by a significant margin despite being the weakest performer.</strong> At $0.049 per million tokens via OpenRouter, its cloud equivalent costs £0.006 for this experiment versus £0.036 for Qwen. Price and quality do not correlate in this comparison.</p></div>
   </div>
 
   <p class="section-label" style="margin-top:1.5rem">Cost at scale</p>
@@ -448,27 +458,27 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
     <table class="data-table">
       <thead><tr>
         <th>Volume</th><th>Compute time</th>
-        <th>Local &mdash; electricity</th><th>Local &mdash; incl. amortisation</th>
+        <th>Local — electricity</th><th>Local — incl. amortisation</th>
         <th>Cloud API (3 models)</th><th>Cheaper option</th>
       </tr></thead>
       <tbody>
-        <tr><td><span class="coin-id">101 coins</span><br><span style="font-size:11px;color:var(--text-muted)">this experiment</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">4.80 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.029</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.77</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.074</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
-        <tr><td><span class="coin-id">1,000 coins</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">47.5 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.29</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;7.61</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.73</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
-        <tr><td><span class="coin-id">10,000 coins</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">475 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;2.89</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;76</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;7.33</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
-        <tr><td><span class="coin-id">100,000 coins</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">4,750 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;28.90</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;761</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;73.30</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
-        <tr><td><span class="coin-id">2.45M coins</span><br><span style="font-size:11px;color:var(--text-muted)">break-even point</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">~115,000 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;700</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;1,799</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;1,799</td><td><span class="grade-badge" style="background:#FAF0DC;color:#7A5508">Break-even</span></td></tr>
+        <tr><td><span class="coin-id">101 coins</span><br><span style="font-size:11px;color:var(--text-muted)">this experiment</span></td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">4.80 hrs</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£0.029</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£0.77</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£0.074</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">1,000 coins</span></td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">47.5 hrs</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£0.29</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£7.61</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£0.73</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">10,000 coins</span></td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">475 hrs</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£2.89</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£76</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£7.33</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">100,000 coins</span></td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">4,750 hrs</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£28.90</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£761</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£73.30</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">2.45M coins</span><br><span style="font-size:11px;color:var(--text-muted)">break-even point</span></td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">~115,000 hrs</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£700</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£1,799</td><td style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">£1,799</td><td><span class="grade-badge" style="background:#FAF0DC;color:#7A5508">Break-even</span></td></tr>
       </tbody>
     </table>
   </div>
-  <p style="font-size:13px;color:var(--text-muted);margin-top:.6rem;font-family:'EB Garamond',serif;font-style:italic">Assumptions: M5 base chip at 20W during LLM inference; PowerNI unit rate at 30.62p/kWh (April 2026 bill; Northern Ireland electricity sits outside the Ofgem price cap); MacBook Pro M5 14" 24GB at &pound;1,799 amortised over 4 years at 8 hours/day; three-model total compute 4.80 hours. Qwen VL Plus at $0.137/$0.409 per 1M tokens; Gemini Flash 2.5 at $0.10/$0.40 per 1M tokens; Llama 3.2 Vision 11B at $0.049/$0.049 per 1M tokens via OpenRouter; USD/GBP at 0.80. Llama is the cheapest cloud option by a significant margin despite being the weakest performer on this task.</p>
+  <p style="font-size:13px;color:var(--text-muted);margin-top:.6rem;font-family:&#39;EB Garamond&#39;,serif;font-style:italic">Assumptions: M5 base chip at 20W during LLM inference; PowerNI unit rate at 30.62p/kWh (April 2026 bill; Northern Ireland electricity sits outside the Ofgem price cap); MacBook Pro M5 14" 24GB at £1,799 amortised over 4 years at 8 hours/day; three-model total compute 4.80 hours. Qwen VL Plus at $0.137/$0.409 per 1M tokens; Gemini Flash 2.5 at $0.10/$0.40 per 1M tokens; Llama 3.2 Vision 11B at $0.049/$0.049 per 1M tokens via OpenRouter; USD/GBP at 0.80. Llama is the cheapest cloud option by a significant margin despite being the weakest performer on this task.</p>
 </section>
 
 </main>
 
 <footer>
   <div class="footer-name">David Crozier CBE</div>
-  <div class="footer-detail" style="margin-top:4px">Principal, Crozier Counsel &nbsp;&bull;&nbsp; <a href="https://croziercounsel.com">croziercounsel.com</a> &nbsp;&bull;&nbsp; <a href="mailto:info@croziercounsel.com">info@croziercounsel.com</a></div>
-  <div class="footer-detail" style="margin-top:6px;opacity:.6">&copy; 2026 Crozier Counsel &mdash; All rights reserved</div>
+  <div class="footer-detail" style="margin-top:4px">Principal, Crozier Counsel &nbsp;•&nbsp; <a href="https://croziercounsel.com/">croziercounsel.com</a> &nbsp;•&nbsp; <a href="mailto:info@croziercounsel.com">info@croziercounsel.com</a></div>
+  <div class="footer-detail" style="margin-top:6px;opacity:.6">© 2026 Crozier Counsel — All rights reserved</div>
 </footer>
 
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -479,20 +489,20 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text
         <p class="modal-coin-title" id="modalCoinTitle"></p>
         <p class="modal-coin-sub" id="modalCoinSub"></p>
       </div>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <button class="modal-close" onclick="closeModal()">×</button>
     </div>
     <div class="modal-body">
       <div class="modal-images">
-        <div><div class="coin-img-wrap" id="imgWrap1"><div class="img-error" id="imgError1">Image not found</div></div><p class="img-label">Image A &mdash; Obverse</p></div>
-        <div><div class="coin-img-wrap" id="imgWrap2"><div class="img-error" id="imgError2">Image not found</div></div><p class="img-label">Image B &mdash; Reverse</p></div>
+        <div><div class="coin-img-wrap" id="imgWrap1"><div class="img-error" id="imgError1">Image not found</div></div><p class="img-label">Image A — Obverse</p></div>
+        <div><div class="coin-img-wrap" id="imgWrap2"><div class="img-error" id="imgError2">Image not found</div></div><p class="img-label">Image B — Reverse</p></div>
       </div>
       <div class="modal-compare">
         <div class="mc-head"><div>Field</div><div>Qwen (A)</div><div>Gemma (B)</div><div>Llama (C)</div></div>
         <div id="modalRows"></div>
       </div>
       <div class="modal-nav">
-        <button id="btnPrev" onclick="navigateCoin(-1)">&#8592; Previous</button>
-        <button id="btnNext" onclick="navigateCoin(1)">Next &#8594;</button>
+        <button id="btnPrev" onclick="navigateCoin(-1)">← Previous</button>
+        <button id="btnNext" onclick="navigateCoin(1)">Next →</button>
       </div>
     </div>
   </div>
@@ -593,5 +603,5 @@ document.addEventListener("keydown",e=>{
 
 renderTable();
 </script>
-</body>
-</html>
+
+</body></html>
