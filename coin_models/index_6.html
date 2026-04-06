@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cigar Tin Project: AI Model Evaluation &#8212; David Crozier CBE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1A2332;--enamel:#7FACC8;--gold:#BF9A3A;--gold-light:#D4B56A;--rose:#C86B75;--pearl:#B5B0A8;--cream:#FAF9F6;--cream-dark:#F0EDE6;--text-body:#2C3340;--text-muted:#6B6860;--border:#DDD9D0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text-body);font-family:"EB Garamond",Georgia,serif;font-size:18px;line-height:1.75;min-height:100vh}
+.site-header{background:var(--navy);border-bottom:3px solid var(--gold)}
+.header-inner{max-width:1100px;margin:0 auto;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.brand-name{font-family:"Libre Baskerville",serif;font-size:15px;font-weight:700;letter-spacing:.04em;color:var(--cream);text-transform:uppercase}
+.brand-sub{font-family:"EB Garamond",serif;font-size:12px;font-style:italic;color:var(--enamel)}
+.header-rule{flex:1;height:1px;background:rgba(127,172,200,.3);min-width:30px}
+.header-tag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--pearl);white-space:nowrap}
+.hero{background:var(--navy);padding:3.5rem 2rem 3rem}
+.hero-inner{max-width:1100px;margin:0 auto}
+.hero-eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.hero-title{font-family:"Libre Baskerville",serif;font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--cream);line-height:1.25;max-width:780px;margin-bottom:.6rem}
+.hero-subtitle{font-family:"EB Garamond",serif;font-size:clamp(15px,2vw,19px);font-style:italic;color:var(--enamel);max-width:680px;margin-bottom:2rem}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.4rem 2rem;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--pearl);border-top:1px solid rgba(127,172,200,.25);padding-top:1.25rem}
+.hero-meta span{display:flex;align-items:center;gap:.5rem}
+.hero-meta span::before{content:"";display:inline-block;width:4px;height:4px;background:var(--gold);border-radius:50%}
+.main{max-width:1100px;margin:0 auto;padding:3rem 2rem 5rem}
+.abstract{border-left:3px solid var(--gold);padding:1.25rem 1.75rem;background:var(--cream-dark);border-radius:0 4px 4px 0;margin-bottom:3.5rem;font-size:17px;font-style:italic;color:var(--text-muted);line-height:1.8}
+.section{margin-bottom:3.5rem}
+.section-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.section-title{font-family:"Libre Baskerville",serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
+.section-body{font-size:17px;line-height:1.8;color:var(--text-body);margin-bottom:1.25rem}
+.divider{border:none;border-top:1px solid var(--border);margin:3rem 0}
+.model-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:1.5rem}
+.model-card{background:white;border:1px solid var(--border);border-radius:6px;padding:1.5rem;position:relative;overflow:hidden}
+.model-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px}
+.model-card.qwen::before{background:var(--enamel)}
+.model-card.gemma::before{background:var(--rose)}
+.model-card.llama::before{background:var(--gold)}
+.model-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px;display:inline-block;margin-bottom:.75rem;font-weight:500}
+.model-label.qwen{background:#EBF4FA;color:#2A6A8A}
+.model-label.gemma{background:#FAECEE;color:#8A2A35}
+.model-label.llama{background:#FAF0DC;color:#7A5508}
+.model-name{font-family:"Libre Baskerville",serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:1rem}
+.model-stat{font-size:14px;color:var(--text-muted);margin:6px 0;display:flex;justify-content:space-between;border-bottom:1px solid var(--cream-dark);padding-bottom:5px}
+.model-stat:last-child{border-bottom:none;padding-bottom:0}
+.model-stat b{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;color:var(--navy)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin:1.5rem 0}
+.stat-card{background:white;border:1px solid var(--border);border-radius:6px;padding:1.25rem 1rem;text-align:center;position:relative;overflow:hidden}
+.stat-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px}
+.stat-card.green::after{background:#5A9A6A}
+.stat-card.amber::after{background:var(--gold)}
+.stat-card.red::after{background:var(--rose)}
+.stat-val{font-family:"Libre Baskerville",serif;font-size:34px;font-weight:700;line-height:1;margin-bottom:6px}
+.stat-val.green{color:#3A7A4A}
+.stat-val.amber{color:#8A6010}
+.stat-val.red{color:#A33040}
+.stat-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);line-height:1.4}
+.finding{display:flex;gap:1.25rem;align-items:flex-start;padding:1.1rem 1.25rem;border:1px solid var(--border);border-radius:6px;margin:.75rem 0;background:white}
+.finding-code{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.05em;padding:4px 9px;border-radius:3px;white-space:nowrap;margin-top:3px;flex-shrink:0}
+.fc-green{background:#EBF5EE;color:#2A6A3A}
+.fc-amber{background:#FAF0DC;color:#7A5508}
+.fc-red{background:#FAECEE;color:#8A2A35}
+.fc-blue{background:#EBF4FA;color:#2A5A8A}
+.fc-purple{background:#EEEDFE;color:#3C3489}
+.finding-text{font-size:16px;line-height:1.7}
+.finding-text strong{color:var(--navy);font-weight:600}
+.iter-item{background:white;border:1px solid var(--border);border-radius:6px;padding:1.1rem 1.25rem;margin:.75rem 0}
+.iter-num{font-family:"JetBrains Mono",monospace;font-size:10px;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:.5rem;background:#EBF4FA;color:#2A5A8A;font-weight:500}
+.iter-problem{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:.4rem}
+.iter-fix{font-size:15px;color:var(--text-muted);line-height:1.6}
+.table-controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;padding:.85rem 1rem;background:var(--cream-dark);border-radius:6px;border:1px solid var(--border)}
+.control-group{display:flex;align-items:center;gap:.5rem}
+.control-group label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+.control-group select{font-family:"JetBrains Mono",monospace;font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:4px;background:white;color:var(--navy);cursor:pointer}
+.table-wrap{border:1px solid var(--border);border-radius:6px;overflow:hidden;overflow-x:auto;background:white}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:11px 14px;background:var(--navy);color:var(--pearl);text-align:left;font-weight:500;white-space:nowrap}
+.data-table th.center{text-align:center}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--cream-dark);vertical-align:middle;color:var(--text-body)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--cream)}
+.data-table td.center{text-align:center}
+.coin-id{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--text-muted)}
+.grade-badge{font-family:"JetBrains Mono",monospace;font-size:11px;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.gb-q{background:#EBF4FA;color:#1A5A7A}
+.gb-g{background:#FAECEE;color:#7A2A35}
+.gb-l{background:#FAF0DC;color:#7A5508}
+.agree-yes{color:#3A7A4A;font-size:15px;font-weight:600}
+.agree-no{color:#A33040;font-size:15px;font-weight:600}
+.view-btn{font-family:"JetBrains Mono",monospace;font-size:11px;padding:4px 12px;background:var(--navy);color:var(--cream);border:none;border-radius:3px;cursor:pointer;white-space:nowrap;transition:background .15s}
+.view-btn:hover{background:var(--gold);color:var(--navy)}
+.empty-row td{text-align:center;padding:2.5rem;color:var(--text-muted);font-style:italic;font-size:15px}
+.pagination{display:flex;align-items:center;gap:.75rem;margin-top:1rem;font-family:"JetBrains Mono",monospace;font-size:11px;flex-wrap:wrap}
+.pg-btn{padding:5px 14px;background:white;border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--navy);font-family:"JetBrains Mono",monospace;font-size:11px;transition:all .15s}
+.pg-btn:hover:not(:disabled){background:var(--navy);color:var(--cream);border-color:var(--navy)}
+.pg-btn:disabled{opacity:.4;cursor:default}
+.pg-info{color:var(--text-muted)}
+.conclusions{background:var(--navy);border-radius:8px;padding:2rem;margin-top:1.5rem}
+.rec-item{display:flex;gap:1rem;align-items:flex-start;margin:1rem 0;font-size:16px;color:rgba(250,249,246,.88);line-height:1.7}
+.rec-num{font-family:"JetBrains Mono",monospace;font-size:11px;background:rgba(191,154,58,.25);color:var(--gold-light);border:1px solid rgba(191,154,58,.4);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px}
+.rec-item strong{color:var(--cream)}
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:2rem;text-align:center}
+.footer-name{font-family:"Libre Baskerville",serif;font-size:13px;font-weight:700;color:var(--cream);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.footer-detail{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--pearl);letter-spacing:.08em}
+.footer-detail a{color:var(--enamel);text-decoration:none}
+.footer-detail a:hover{color:var(--gold)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,35,50,.88);z-index:1000;overflow-y:auto;padding:2rem 1rem}
+.modal-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.modal{background:var(--cream);border-radius:8px;width:100%;max-width:860px;border-top:4px solid var(--gold);overflow:hidden;position:relative;margin:auto}
+.modal-header{background:var(--navy);padding:1.25rem 1.75rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+.modal-coin-id{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.modal-coin-title{font-family:"Libre Baskerville",serif;font-size:18px;font-weight:700;color:var(--cream);line-height:1.3}
+.modal-coin-sub{font-family:"EB Garamond",serif;font-size:14px;font-style:italic;color:var(--enamel);margin-top:2px}
+.modal-close{background:rgba(191,154,58,.2);border:1px solid rgba(191,154,58,.4);color:var(--gold-light);font-family:"JetBrains Mono",monospace;font-size:13px;width:32px;height:32px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.modal-close:hover{background:var(--gold);color:var(--navy)}
+.modal-body{padding:1.75rem}
+.modal-images{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.75rem}
+@media(max-width:540px){.modal-images{grid-template-columns:1fr}}
+.coin-img-wrap{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--cream-dark);aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.coin-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;transition:transform .2s}
+.coin-img-wrap img:hover{transform:scale(1.03)}
+.img-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-top:6px}
+.img-error{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--pearl);text-align:center;padding:2rem}
+.modal-compare{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:1.25rem}
+.mc-head{display:grid;grid-template-columns:100px 1fr 1fr 1fr;background:var(--navy);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--pearl)}
+.mc-head div,.mc-row div{padding:7px 10px}
+.mc-row{display:grid;grid-template-columns:100px 1fr 1fr 1fr;border-top:1px solid var(--cream-dark);font-size:12px}
+.mc-row:hover{background:var(--cream)}
+.mc-row div:first-child{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);background:var(--cream-dark);border-right:1px solid var(--border)}
+.mc-row .mc-q{border-right:1px solid var(--cream-dark)}
+.mc-row .mc-g{border-right:1px solid var(--cream-dark)}
+.agree-pill{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;padding:1px 7px;border-radius:3px;margin-left:5px;vertical-align:middle}
+.pill-yes{background:#EBF5EE;color:#2A6A3A}
+.pill-no{background:#FAECEE;color:#8A2A35}
+.modal-nav{display:flex;gap:.5rem;justify-content:flex-end;padding-top:.5rem;border-top:1px solid var(--border);margin-top:.5rem}
+.modal-nav button{font-family:"JetBrains Mono",monospace;font-size:11px;padding:5px 14px;background:white;border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--navy);transition:all .15s}
+.modal-nav button:hover:not(:disabled){background:var(--navy);color:var(--cream)}
+.modal-nav button:disabled{opacity:.35;cursor:default}
+@media(max-width:640px){.main{padding:2rem 1.25rem 4rem}.header-inner{padding:1rem 1.25rem}.hero{padding:2.5rem 1.25rem 2rem}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div><div class="brand-name">Crozier Counsel</div><div class="brand-sub">Strategic Advisory</div></div>
+    <div class="header-rule"></div>
+    <div class="header-tag">Case Study &mdash; AI Model Evaluation</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">The Cigar Tin Project &mdash; April 2026</p>
+    <h1 class="hero-title">Classifying 101 Inherited Coins Using Local AI Vision Models</h1>
+    <p class="hero-subtitle">A three-model comparison of Qwen3.5, Gemma 4 and Llama 3.2 Vision, run entirely on a MacBook Pro with no cloud dependency</p>
+    <div class="hero-meta">
+      <span>David Crozier CBE</span>
+      <span>Principal, Crozier Counsel</span>
+      <span>101 coins &nbsp;&bull;&nbsp; 202 images</span>
+      <span>3 models evaluated</span>
+      <span>Belfast, April 2026</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+
+<div class="abstract">
+  This case study documents the design and results of a local AI vision pipeline built to catalogue an inherited collection of 101 coins. Three open-weight vision models were run independently via Ollama on a MacBook Pro M5 with 24GB unified memory, with no cloud dependency and no data leaving the device. The results reveal meaningful convergence on country identification between the two stronger models, significant divergence on year and denomination labelling, near-total disagreement on condition grading, and a range of structured output reliability challenges unique to the third model, with important implications for the deployment of local AI models in specialist classification tasks.
+</div>
+
+<section class="section">
+  <p class="section-label">00 &mdash; Background</p>
+  <h2 class="section-title">The Cigar Tin</h2>
+  <p class="section-body">My wife's uncle passed away several years ago. After the house clearance, very little remained. One of the things that did was an old cigar tin, rattling with coins collected over what must have been decades. Nobody knew where they had come from, which countries, which eras, or whether any of them amounted to anything beyond loose change from a life well lived.</p>
+  <p class="section-body">The tin sat around for a while, as these things do. But the question it posed kept coming back: what exactly do we have here? A numismatist would charge for an appraisal. A collector would know at a glance. I am neither. So I decided to build something.</p>
+  <p class="section-body">This project documents how I used local AI vision models, running entirely on a MacBook in a home office in Belfast, to classify all 101 coins, identify their origin, condition and collector value, and compare the performance of three local vision models in the process. No cloud. No API costs. No specialist knowledge required.</p>
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <p class="section-label">01 &mdash; Methodology</p>
+  <h2 class="section-title">Pipeline Design and Model Selection</h2>
+  <p class="section-body">The pipeline was built in five logical stages. First, 202 JPEG images were captured via MacBook webcam using Photo Booth, both sides of each coin photographed in sequence. Photo Booth saves files with system-generated GUID filenames, so a Python script sorted them by modification time and renamed them sequentially to <code style="font-family:'JetBrains Mono',monospace;font-size:14px;background:var(--cream-dark);padding:1px 5px;border-radius:3px">coin_001_A.jpeg</code> through <code style="font-family:'JetBrains Mono',monospace;font-size:14px;background:var(--cream-dark);padding:1px 5px;border-radius:3px">coin_101_B.jpeg</code>.</p>
+  <p class="section-body">A structured prompt instructed each model to act as an expert numismatist and return a JSON object covering 19 fields including country, denomination, year, Sheldon condition grade, metal composition, collector interest, and estimated value range. All three models were run via <a href="https://ollama.com" style="color:var(--gold)">Ollama</a> on the MacBook Pro, with each model completing all 101 coins in a single pass before switching. This kept each model fully resident in the 24GB unified memory and avoided costly model-swap overhead. Results were saved after every coin, allowing the pipeline to resume from any interruption.</p>
+  <p class="section-body">The JSON parser was written to handle markdown fences, prose wrapping, and partial JSON, extracting a valid object from each response regardless of formatting. This proved essential: Gemma initially wrapped all output in markdown code fences, and Llama produced two distinct corruption patterns that required a multi-stage parser to resolve. Additionally, Llama uses a different API endpoint to the other two models and can only accept one image per message, requiring each coin to be submitted as a two-turn conversation rather than a single prompt.</p>
+
+  <div class="model-grid" style="margin-top:1.5rem;margin-bottom:1.75rem">
+    <div class="model-card qwen">
+      <span class="model-label qwen">Model A &mdash; Qwen</span>
+      <p class="model-name">Qwen3.5:9b</p>
+      <div class="model-stat"><span>Developer</span><b>Alibaba Cloud</b></div>
+      <div class="model-stat"><span>Size on disk</span><b>6.6 GB</b></div>
+      <div class="model-stat"><span>Context window</span><b>256K tokens</b></div>
+      <div class="model-stat"><span>Modalities</span><b>Text &amp; image</b></div>
+      <p style="font-size:14px;color:var(--text-muted);margin-top:.75rem;line-height:1.6">Qwen3.5 is Alibaba's third-generation multimodal family, released in early 2026. The 9B variant offers a strong balance of vision capability and inference speed on consumer hardware, with a class-leading 256K context window. Selected as a well-regarded open-weight alternative to proprietary vision APIs, with particular strength in structured output generation. Delivered 100% field completion with zero parse errors.</p>
+    </div>
+    <div class="model-card gemma">
+      <span class="model-label gemma">Model B &mdash; Gemma</span>
+      <p class="model-name">Gemma4:e4b</p>
+      <div class="model-stat"><span>Developer</span><b>Google DeepMind</b></div>
+      <div class="model-stat"><span>Size on disk</span><b>9.6 GB</b></div>
+      <div class="model-stat"><span>Context window</span><b>128K tokens</b></div>
+      <div class="model-stat"><span>Modalities</span><b>Text &amp; image</b></div>
+      <p style="font-size:14px;color:var(--text-muted);margin-top:.75rem;line-height:1.6">Gemma 4 is Google DeepMind's open-weight model family for efficient on-device deployment. The e4b variant is a 4-bit quantised build optimised for Apple Silicon. Included as a direct Google-provenance comparator, allowing results to be set against what a paid Gemini API call would return from the same model lineage, without transmitting data off-device. Fastest of the three at 54.7 seconds per coin.</p>
+    </div>
+    <div class="model-card llama">
+      <span class="model-label llama">Model C &mdash; Llama</span>
+      <p class="model-name">Llama3.2-vision:11b</p>
+      <div class="model-stat"><span>Developer</span><b>Meta AI</b></div>
+      <div class="model-stat"><span>Size on disk</span><b>7.9 GB</b></div>
+      <div class="model-stat"><span>Context window</span><b>128K tokens</b></div>
+      <div class="model-stat"><span>Modalities</span><b>Text &amp; image (single image)</b></div>
+      <p style="font-size:14px;color:var(--text-muted);margin-top:.75rem;line-height:1.6">Llama 3.2 Vision is Meta's open-weight multimodal model, released September 2024. Included as a widely-deployed open-source comparator to test whether a third model lineage would produce meaningfully different results. It encountered several significant reliability challenges not seen in the other two models, detailed in the findings, and required four passes and a multi-stage custom parser to complete the full dataset.</p>
+    </div>
+  </div>
+
+  <div class="model-grid">
+    <div class="model-card qwen">
+      <span class="model-label qwen">Model A &mdash; Qwen</span>
+      <p class="model-name">Results at a glance</p>
+      <div class="model-stat"><span>Average response time</span><b>60.3 s</b></div>
+      <div class="model-stat"><span>Most common grade</span><b>G-4 (87% of coins)</b></div>
+      <div class="model-stat"><span>Confidence (modal)</span><b>95%</b></div>
+      <div class="model-stat"><span>Parse errors</span><b>0</b></div>
+      <div class="model-stat"><span>Passes required</span><b>1</b></div>
+    </div>
+    <div class="model-card gemma">
+      <span class="model-label gemma">Model B &mdash; Gemma</span>
+      <p class="model-name">Results at a glance</p>
+      <div class="model-stat"><span>Average response time</span><b>54.7 s</b></div>
+      <div class="model-stat"><span>Most common grade</span><b>VF-20 (46% of coins)</b></div>
+      <div class="model-stat"><span>Confidence (modal)</span><b>95%</b></div>
+      <div class="model-stat"><span>Parse errors</span><b>0</b></div>
+      <div class="model-stat"><span>Passes required</span><b>1</b></div>
+    </div>
+    <div class="model-card llama">
+      <span class="model-label llama">Model C &mdash; Llama</span>
+      <p class="model-name">Results at a glance</p>
+      <div class="model-stat"><span>Avg response (non-zero)</span><b>56.0 s</b></div>
+      <div class="model-stat"><span>Most common grade</span><b>MS-65 (71% of coins)</b></div>
+      <div class="model-stat"><span>Confidence where reported</span><b>100% (modal)</b></div>
+      <div class="model-stat"><span>Full parse errors</span><b>0 (65 partial)</b></div>
+      <div class="model-stat"><span>Passes required</span><b>4</b></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <p class="section-label">02 &mdash; Results</p>
+  <h2 class="section-title">Agreement Rates by Field</h2>
+  <p class="section-body">Agreement rates below reflect two-model comparison between Qwen and Gemma, the two models that completed the dataset without reliability anomalies. Llama's results are analysed separately in the findings section. Adding Llama as a third comparator did not improve any field's agreement rate.</p>
+  <div class="stats-grid">
+    <div class="stat-card green"><div class="stat-val green">81%</div><div class="stat-label">Country<br>agreement</div></div>
+    <div class="stat-card amber"><div class="stat-val amber">59%</div><div class="stat-label">Year<br>agreement</div></div>
+    <div class="stat-card red"><div class="stat-val red">31%</div><div class="stat-label">Denomination<br>agreement</div></div>
+    <div class="stat-card red"><div class="stat-val red">2%</div><div class="stat-label">Condition<br>agreement</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <p class="section-label">03 &mdash; Key Findings</p>
+  <h2 class="section-title">What the Data Tells Us</h2>
+
+  <div class="finding"><span class="finding-code fc-green">F 1</span><p class="finding-text"><strong>Country identification is the most reliable field at 81%.</strong> Most disagreements between Qwen and Gemma involved colonial or dependency attributions, for example British India versus United Kingdom, attributable to labelling ambiguity rather than genuine misidentification. Llama's country accuracy was considerably lower, with 37 mismatches including egregious errors such as Czech Republic for Bulgaria, Monaco for Brazil, and Canada for France.</p></div>
+
+  <div class="finding"><span class="finding-code fc-amber">F 2</span><p class="finding-text"><strong>Year agreement at 59% is substantially weaker than initial sampling suggested.</strong> An early ten-coin sample indicated 90%, but the full dataset reveals this was unrepresentative. Year identification deteriorates significantly for older, worn, or partially legible coins where date digits are obscured. Llama introduced an additional failure mode not seen in the other models: returning approximate decades such as "1980s" rather than a specific year on eight coins.</p></div>
+
+  <div class="finding"><span class="finding-code fc-red">F 3</span><p class="finding-text"><strong>Denomination agreement at 31% is the most significant failure mode between Qwen and Gemma.</strong> Disagreements arise from labelling convention differences ("20p" versus "20 Pence"), currency system misattributions, and genuine identification errors on ambiguous pre-decimal coins. A normalisation post-processing layer would resolve the majority of convention-based discrepancies without requiring model retraining.</p></div>
+
+  <div class="finding"><span class="finding-code fc-red">F 4</span><p class="finding-text"><strong>Condition grading is almost entirely divergent: only 2 of 101 coins received the same grade from Qwen and Gemma.</strong> Qwen applied G-4 to 87% of coins, treating it as a near-universal default for circulated coinage. Gemma applied VF-20 to 46% of coins with considerably more variance. The two models are not using different rubrics so much as Qwen has collapsed the grading scale to a single value.</p></div>
+
+  <div class="finding"><span class="finding-code fc-amber">F 5</span><p class="finding-text"><strong>Confidence scores are uninformative as a tiebreaker.</strong> Qwen and Gemma both reported 95% on almost every coin regardless of disagreement. Llama reported 100% on the coins it did score, but left 33 of 101 confidence fields empty entirely. None of the three models' confidence outputs can be used to flag uncertain cases without explicit calibration against a ground-truth validation set.</p></div>
+
+  <div class="finding"><span class="finding-code fc-blue">F 6</span><p class="finding-text"><strong>Gemma is the fastest and most discriminating model for this task.</strong> At 54.7 seconds average it is meaningfully quicker than both Qwen (60.3s) and Llama (56.0s on completed coins). It applies a broader range of condition grades than either of the other models, making it the strongest baseline for production use once a common grading rubric is established via prompt engineering.</p></div>
+
+  <div class="finding"><span class="finding-code fc-red">F 7</span><p class="finding-text"><strong>Llama applied MS-65 to 71% of all coins, the most extreme grading bias of any model.</strong> MS-65 is a near-perfect Mint State grade reserved for uncirculated coins with virtually no wear. Applying it to 72 of 101 coins photographed on a desk with a webcam is clearly incorrect. Where Qwen's G-4 default understates condition, Llama's MS-65 default overstates it by the maximum possible margin. Neither model is usable for grading without explicit rubric anchoring in the system prompt.</p></div>
+
+  <div class="finding"><span class="finding-code fc-red">F 8</span><p class="finding-text"><strong>Llama produced significant structured output reliability issues absent from the other two models.</strong> It produced malformed JSON in two distinct patterns: stray numeral tokens inserted after commas throughout the output, and denomination values used as key names rather than values. Standard JSON parsing failed on 65 of 101 coins, requiring a multi-stage custom parser. Twelve coins returned with zero elapsed time. Thirty-three confidence fields were empty. Llama also required four separate passes to complete the dataset due to repeated timeouts, compared to a single pass for both Qwen and Gemma.</p></div>
+
+  <div class="finding"><span class="finding-code fc-purple">F 9</span><p class="finding-text"><strong>Six coins stumped all three models simultaneously, each producing a different country identification.</strong> Coin 026 was identified as United Kingdom, Australia and United States. Coin 030 divided between Slovakia, Slovenia and Czech Republic. Coin 060 produced United Kingdom, United States and New Zealand. Coin 073 was called Ireland, Eire and South Africa. Coin 085 split as New Zealand, United States and United Kingdom. Coin 088 attracted Ireland, an unknown regional Italian identification and United Kingdom. These are the collection's most genuinely ambiguous pieces, likely worn, partially obscured, or from issues with similar designs across multiple national coinages.</p></div>
+
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <p class="section-label">04 &mdash; Build Log</p>
+  <h2 class="section-title">Trial, Error and Iteration</h2>
+  <p class="section-body">Building the pipeline was not without friction. The following log documents each problem encountered and how it was resolved. The pattern is itself illustrative of how practical AI projects actually develop: the model is rarely the source of difficulty.</p>
+
+  <div class="iter-item"><span class="iter-num">Issue 1</span><p class="iter-problem">TextEdit saved the Python script as Rich Text Format</p><p class="iter-fix">TextEdit defaults to RTF, causing Python to throw a SyntaxError on the RTF header. Fixed by switching to Format > Make Plain Text before pasting code, and setting Plain Text as the default in TextEdit preferences.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 2</span><p class="iter-problem">Photo Booth saved all 202 images with GUID filenames</p><p class="iter-fix">A Python script sorted files by modification time and renamed them sequentially to coin_001_A.jpeg through coin_101_B.jpeg, with a dry-run mode to verify pairings before committing.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 3</span><p class="iter-problem">Gemma wrapping all JSON output in markdown code fences</p><p class="iter-fix">Gemma 4 wrapped every response in ```json ... ``` fences. The parser was rewritten to strip markdown fences and extract the outermost { } block from any response, making it immune to fenced and prose-wrapped outputs.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 4</span><p class="iter-problem">Gemma output truncated mid-field by token limit</p><p class="iter-fix">Gemma's verbose output exceeded the 1,024-token num_predict limit, truncating responses mid-field. Increased to 2,048 tokens, providing sufficient headroom for complete responses across all coin types.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 5</span><p class="iter-problem">Incorrect Ollama model tags in the script</p><p class="iter-fix">Initial tags (qwen2.5vl:latest and gemma3:27b) did not match the locally installed models. Corrected to qwen3.5:9b and gemma4:latest, confirmed via ollama list.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 6</span><p class="iter-problem">Model-swap overhead from alternating models per coin</p><p class="iter-fix">The original pipeline alternated between models for each coin, forcing Ollama to swap models in and out of the 24GB unified memory on every iteration. Refactored with a --model flag to run all 101 coins through one model before switching, keeping the full model resident throughout.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 7</span><p class="iter-problem">Timeout on coin 83 during the Qwen pass</p><p class="iter-fix">Coin 83 exceeded the 120-second timeout, likely due to a complex or ambiguous image requiring longer inference. Because progress is saved after every successful coin, the script was simply re-run. Coin 83 completed on the second attempt.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 8</span><p class="iter-problem">Llama 3.2 Vision: 400 Bad Request on all coins</p><p class="iter-fix">Llama uses a different API endpoint to Qwen and Gemma. Sending images via /api/generate with a top-level images field returned a 400 error on every coin. The query function was updated to route Llama through /api/chat with a messages structure, while Qwen and Gemma continue to use /api/generate.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 9</span><p class="iter-problem">Llama 3.2 Vision only accepts one image per message</p><p class="iter-fix">After fixing the endpoint, a 500 error appeared: "this model only supports one image while more than one image requested." Llama cannot accept both coin sides in a single message. The payload was restructured as a two-turn conversation: the A side sent first, a brief assistant acknowledgement, then the B side with the full classification prompt.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 10</span><p class="iter-problem">Llama producing malformed JSON on 65 of 101 coins</p><p class="iter-fix">Two distinct corruption patterns: stray numeral 1 tokens inserted after every comma, and denomination values used as key names (e.g. 20: Czech Koron). Standard parsing failed on 65 coins. A multi-stage parser was added: stripping stray tokens, fixing unquoted numeric keys, and falling back to key-value pair extraction for partially valid responses. Full parse errors were reduced to zero, with 65 coins marked as partial parses.</p></div>
+
+  <div class="iter-item"><span class="iter-num">Issue 11</span><p class="iter-problem">Llama requiring four passes to complete 101 coins</p><p class="iter-fix">Llama repeatedly timed out on individual coins during each pass, requiring three additional restarts. The progress file tracks each completed coin individually, so each restart resumed from where the previous pass left off. All 101 coins were eventually processed: 36 clean parses and 65 partial parses.</p></div>
+
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <p class="section-label">05 &mdash; Data Explorer</p>
+  <h2 class="section-title">Coin-by-Coin Results</h2>
+  <p class="section-body">Select any coin to view source images alongside a field-by-field comparison of all three models' outputs.</p>
+  <div class="table-controls">
+    <div class="control-group">
+      <label>Country</label>
+      <select id="filterCountry" onchange="applyFilters()">
+        <option value="">All countries</option>
+          <option>Australia</option>
+          <option>Belgium</option>
+          <option>Brazil</option>
+          <option>Bulgaria</option>
+          <option>Canada</option>
+          <option>Croatia</option>
+          <option>France</option>
+          <option>Ireland</option>
+          <option>Ireland (British Rule)</option>
+          <option>Isle of Man</option>
+          <option>Jersey</option>
+          <option>Kenya</option>
+          <option>New Zealand</option>
+          <option>Poland</option>
+          <option>Portugal</option>
+          <option>Slovakia</option>
+          <option>Spain</option>
+          <option>United Kingdom</option>
+          <option>United Kingdom (British India)</option>
+          <option>United States</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Show</label>
+      <select id="filterAgree" onchange="applyFilters()">
+        <option value="">All 101 coins</option>
+        <option value="country_no">Country disagreements (Qwen/Gemma)</option>
+        <option value="year_no">Year disagreements</option>
+        <option value="denom_no">Denomination disagreements</option>
+        <option value="cond_yes">Condition agreed (2 coins)</option>
+        <option value="delta">Non-zero confidence delta</option>
+        <option value="llama_ms65">Llama MS-65 (71% of coins)</option>
+        <option value="llama_zero">Llama zero elapsed time (12 coins)</option>
+        <option value="contested">Six contested coins (all models differ)</option>
+      </select>
+    </div>
+    <div class="control-group" style="margin-left:auto">
+      <span id="resultCount" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted)"></span>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr>
+        <th>Coin</th><th>Country</th><th>Denom.</th><th>Year</th>
+        <th>Qwen</th><th>Gemma</th><th>Llama</th>
+        <th class="center">Ctry</th><th class="center">Year</th>
+        <th class="center">Denom.</th><th class="center">Cond.</th>
+        <th class="center">&Delta;</th><th class="center">View</th>
+      </tr></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <button class="pg-btn" id="pgPrev" onclick="changePage(-1)">&#8592; Prev</button>
+    <span class="pg-info" id="pgInfo"></span>
+    <button class="pg-btn" id="pgNext" onclick="changePage(1)">Next &#8594;</button>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <p class="section-label">06 &mdash; Conclusions &amp; Recommendations</p>
+  <h2 class="section-title">Implications for Deployment</h2>
+  <p class="section-body">The experiment demonstrates both the maturity and the current limits of open-weight vision models on a specialist classification task. Provenance identification is sufficiently reliable to automate at scale. Condition grading and denomination labelling are not, without further prompt engineering. Llama's reliability profile makes it unsuitable for production structured data pipelines on this hardware without significant additional work.</p>
+  <div class="conclusions">
+    <div class="rec-item"><span class="rec-num">1</span><span><strong>Do not rely on any model for denomination identification without post-processing.</strong> At 31% agreement, a normalisation layer mapping free-text output to a controlled vocabulary is essential before any downstream use.</span></div>
+    <div class="rec-item"><span class="rec-num">2</span><span><strong>Treat year identification as unreliable for pre-1950 coins.</strong> Most year disagreements cluster around older, worn coins. A rule-based flag based on estimated coin age and condition could route these for human review automatically.</span></div>
+    <div class="rec-item"><span class="rec-num">3</span><span><strong>Anchor all models to an explicit Sheldon scale rubric with examples.</strong> Qwen's G-4 default and Llama's MS-65 default both render condition grades meaningless for differentiation without explicit rubric instruction in the system prompt.</span></div>
+    <div class="rec-item"><span class="rec-num">4</span><span><strong>Prefer Gemma for production pipelines.</strong> It is the fastest at 54.7 seconds per coin, completed in a single pass with zero parse errors, and applies more discriminating condition grades than either Qwen or Llama.</span></div>
+    <div class="rec-item"><span class="rec-num">5</span><span><strong>Qwen is the most consistent choice for structured output pipelines.</strong> One hundred per cent field completion, zero parse errors, and single-pass completion make it the lowest-risk option where output reliability is the primary concern.</span></div>
+    <div class="rec-item"><span class="rec-num">6</span><span><strong>Do not deploy Llama 3.2 Vision for structured classification without significant engineering investment.</strong> Its MS-65 grading default, 65 partial parses, four-pass requirement, and country misidentification rate make it the weakest performer. Its single-image-per-message constraint also requires a workaround that adds pipeline complexity.</span></div>
+    <div class="rec-item"><span class="rec-num">7</span><span><strong>The six contested coins warrant specialist human review.</strong> The six coins where all three models gave different country identifications represent the collection's genuinely ambiguous pieces. They are the ones that would give a human numismatist pause too, and should be set aside for expert appraisal.</span></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section">
+  <p class="section-label">07 &mdash; Cost Analysis</p>
+  <h2 class="section-title">Local Inference vs Cloud API</h2>
+  <p class="section-body">All three models were run locally with no cloud dependency. The comparison below uses each model's nearest commercial API equivalent: Qwen VL Plus on Alibaba Cloud, Gemini Flash 2.5 for Gemma, and Llama 3.2 Vision 11B via OpenRouter for Llama. Token estimates are based on actual image dimensions (720x480px): 425 visual tokens for Qwen VL, 258 for both Gemini and Llama (single tile at this resolution), plus approximately 700 tokens of system prompt and output schema.</p>
+
+  <div class="model-grid" style="margin-top:1.5rem">
+    <div class="model-card" style="border-top:3px solid var(--navy)">
+      <span class="model-label qwen">Local &mdash; MacBook Pro M5</span>
+      <p class="model-name" style="font-size:15px">Hardware: &pound;1,799 &nbsp;&middot;&nbsp; 20W inference draw</p>
+      <div class="model-stat"><span>Electricity (4.80 hrs @ 30.62p/kWh)</span><b>&pound;0.029</b></div>
+      <div class="model-stat"><span>Hardware amortisation (4yr, 8hr/day)</span><b>&pound;0.74</b></div>
+      <div class="model-stat"><span>Total (marginal, electricity only)</span><b>2.9p</b></div>
+      <div class="model-stat"><span>Total (including amortisation)</span><b>77p</b></div>
+      <div class="model-stat"><span>Data privacy</span><b>Complete &mdash; on device</b></div>
+    </div>
+    <div class="model-card" style="border-top:3px solid var(--gold)">
+      <span class="model-label llama">Cloud &mdash; Paid API Tokens</span>
+      <p class="model-name" style="font-size:15px">Qwen VL Plus &nbsp;+&nbsp; Gemini Flash 2.5 &nbsp;+&nbsp; Llama 3.2 Vision</p>
+      <div class="model-stat"><span>Qwen VL Plus (Alibaba Cloud)</span><b>&pound;0.036</b></div>
+      <div class="model-stat"><span>Gemini Flash 2.5 (Google AI)</span><b>&pound;0.032</b></div>
+      <div class="model-stat"><span>Llama 3.2 Vision 11B (OpenRouter)</span><b>&pound;0.006</b></div>
+      <div class="model-stat"><span>Combined total, all three models</span><b>7.4p</b></div>
+      <div class="model-stat"><span>Data privacy</span><b>Images leave device</b></div>
+    </div>
+  </div>
+
+  <div style="margin:1.75rem 0">
+    <div class="finding"><span class="finding-code fc-blue">C 1</span><p class="finding-text"><strong>If the MacBook is already owned, local inference costs less than the cloud equivalent.</strong> The marginal electricity cost across all three models is 2.9p. The equivalent cloud API bill is 7.4p. Both figures are negligible in absolute terms, but the privacy advantage of on-device processing is not.</p></div>
+    <div class="finding"><span class="finding-code fc-amber">C 2</span><p class="finding-text"><strong>Cloud wins on total cost of ownership at this scale.</strong> Including hardware amortisation, local inference costs 77p for 101 coins versus 7.4p in the cloud. The M5 would need to process approximately 2.45 million coin images before the hardware cost pays back against equivalent cloud API spend.</p></div>
+    <div class="finding"><span class="finding-code fc-green">C 3</span><p class="finding-text"><strong>Privacy is the decisive local advantage at any scale.</strong> For a numismatic catalogue of personal or commercial sensitivity, coin images and the story behind them stay on the device. Cloud APIs transmit images to third-party servers. For a family collection this distinction was the starting point, not an afterthought.</p></div>
+    <div class="finding"><span class="finding-code fc-blue">C 4</span><p class="finding-text"><strong>Llama is the cheapest cloud option by a significant margin despite being the weakest performer.</strong> At $0.049 per million tokens via OpenRouter, its cloud equivalent costs &pound;0.006 for this experiment versus &pound;0.036 for Qwen. Price and quality do not correlate in this comparison.</p></div>
+  </div>
+
+  <p class="section-label" style="margin-top:1.5rem">Cost at scale</p>
+  <div class="table-wrap" style="margin-top:.75rem">
+    <table class="data-table">
+      <thead><tr>
+        <th>Volume</th><th>Compute time</th>
+        <th>Local &mdash; electricity</th><th>Local &mdash; incl. amortisation</th>
+        <th>Cloud API (3 models)</th><th>Cheaper option</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="coin-id">101 coins</span><br><span style="font-size:11px;color:var(--text-muted)">this experiment</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">4.80 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.029</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.77</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.074</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">1,000 coins</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">47.5 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.29</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;7.61</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;0.73</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">10,000 coins</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">475 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;2.89</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;76</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;7.33</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">100,000 coins</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">4,750 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;28.90</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;761</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;73.30</td><td><span class="grade-badge gb-q">Local (elec)</span></td></tr>
+        <tr><td><span class="coin-id">2.45M coins</span><br><span style="font-size:11px;color:var(--text-muted)">break-even point</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">~115,000 hrs</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;700</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;1,799</td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">&pound;1,799</td><td><span class="grade-badge" style="background:#FAF0DC;color:#7A5508">Break-even</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted);margin-top:.6rem;font-family:'EB Garamond',serif;font-style:italic">Assumptions: M5 base chip at 20W during LLM inference; PowerNI unit rate at 30.62p/kWh (April 2026 bill; Northern Ireland electricity sits outside the Ofgem price cap); MacBook Pro M5 14" 24GB at &pound;1,799 amortised over 4 years at 8 hours/day; three-model total compute 4.80 hours. Qwen VL Plus at $0.137/$0.409 per 1M tokens; Gemini Flash 2.5 at $0.10/$0.40 per 1M tokens; Llama 3.2 Vision 11B at $0.049/$0.049 per 1M tokens via OpenRouter; USD/GBP at 0.80. Llama is the cheapest cloud option by a significant margin despite being the weakest performer on this task.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-name">David Crozier CBE</div>
+  <div class="footer-detail" style="margin-top:4px">Principal, Crozier Counsel &nbsp;&bull;&nbsp; <a href="https://croziercounsel.com">croziercounsel.com</a> &nbsp;&bull;&nbsp; <a href="mailto:info@croziercounsel.com">info@croziercounsel.com</a></div>
+  <div class="footer-detail" style="margin-top:6px;opacity:.6">&copy; 2026 Crozier Counsel &mdash; All rights reserved</div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <p class="modal-coin-id" id="modalCoinId"></p>
+        <p class="modal-coin-title" id="modalCoinTitle"></p>
+        <p class="modal-coin-sub" id="modalCoinSub"></p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-images">
+        <div><div class="coin-img-wrap" id="imgWrap1"><div class="img-error" id="imgError1">Image not found</div></div><p class="img-label">Image A &mdash; Obverse</p></div>
+        <div><div class="coin-img-wrap" id="imgWrap2"><div class="img-error" id="imgError2">Image not found</div></div><p class="img-label">Image B &mdash; Reverse</p></div>
+      </div>
+      <div class="modal-compare">
+        <div class="mc-head"><div>Field</div><div>Qwen (A)</div><div>Gemma (B)</div><div>Llama (C)</div></div>
+        <div id="modalRows"></div>
+      </div>
+      <div class="modal-nav">
+        <button id="btnPrev" onclick="navigateCoin(-1)">&#8592; Previous</button>
+        <button id="btnNext" onclick="navigateCoin(1)">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const COINS=[{"id":"coin_001","country":"United Kingdom","denom":"Ten Pence","year":1996,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Nickel-brass","gMetal":"Cupro-nickel (Estimated)","lMetal":"\u2014","qValue":"0.05 - 0.10 GBP","gValue":"\u00a30.05 - \u00a30.50","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1983","lDenom":"10p","lElapsed":0.0,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_002","country":"Bulgaria","denom":"20 Stotinki","year":1999,"qGrade":"G-4","gGrade":"VF-25","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Copper-toned base metal (likely bronze or copper alloy)","lMetal":"Copper","qValue":"$0.10 - $0.25 USD","gValue":"$0.05 - $0.20 USD","lValue":"$1-$5","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Czech Republic","lYear":"1999","lDenom":"20","lElapsed":55.94,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_003","country":"Ireland","denom":"5 Pence","year":1970,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Nickel-Brass","gMetal":"Base metal (likely bronze or copper alloy)","lMetal":"Copper-Plated Steel","qValue":"$0.10 - $0.25 USD","gValue":"$0.50 - $2.00 USD","lValue":"0-10","qColl":"Low","gColl":"Low","lColl":"Medium","lCountry":"Ireland","lYear":"1980s","lDenom":"\u2014","lElapsed":55.44,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_004","country":"Brazil","denom":"1 Real","year":2011,"qGrade":"MS-63","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Outer ring: Copper-Plated Brass (Gold color); Inner ring: Copper-Nickel (Silver ","gMetal":"Copper-toned alloy (Likely Cu-plated steel)","lMetal":"Copper-Plated Steel","qValue":"$0.10 - $0.25 USD","gValue":"$0.10 - $0.50 USD","lValue":"$0.50-$1.00","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Brazil","lYear":"\u2014","lDenom":"1","lElapsed":56.67,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_005","country":"Croatia","denom":"2","year":2016,"qGrade":"MS-63","gGrade":"XF-20","lGrade":"MS-65","qMetal":"Copper-Nickel","gMetal":"Base Metal Alloy (Likely Copper-plated Steel)","lMetal":"Copper-Plated Steel","qValue":"$0.50 - $1.50","gValue":"$0.50 - $2.00 USD (Numismatic value, due to defunct currency","lValue":"$10-$20","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Croatia","lYear":"1993","lDenom":"2 Kuna","lElapsed":57.8,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_006","country":"Brazil","denom":"50 Centavos","year":2009,"qGrade":"VF-30","gGrade":"VF-20","lGrade":"MS-60","qMetal":"Copper-Nickel","gMetal":"Clad base metal (typical for modern Brazilian circulation coinage)","lMetal":"Copper-Plated Steel","qValue":"$0.10 - $0.25 USD","gValue":"$0.50 - $2.00 USD","lValue":"$0.50-$1.00","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"Brazil","lYear":"2009","lDenom":"50","lElapsed":64.16,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_007","country":"Canada","denom":"Quarter","year":1974,"qGrade":"G-4","gGrade":"VF-25","lGrade":"MS-65","qMetal":"80% Silver, 20% Copper","gMetal":"Nickel-plated steel (typical for Canadian 25-cent coins of this era)","lMetal":"C","qValue":"$1.50 - $3.00 CAD","gValue":"$0.50 - $3.00 (Highly dependent on actual condition and mark","lValue":"\u2014","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Canada","lYear":"1973","lDenom":"25","lElapsed":52.88,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_008","country":"Ireland","denom":"1 Shilling","year":1964,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Unknown (Likely Copper-Nickel)","lMetal":"C","qValue":"$0.50 - $1.50","gValue":"$0.50 - $5.00","lValue":"$10","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"Ireland","lYear":"1973","lDenom":"1","lElapsed":54.84,"aC":"no","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_009","country":"Belgium","denom":"1 Franc","year":1953,"qGrade":"G-4","gGrade":"VG-15","lGrade":"G-4","qMetal":"Silver (80% Ag, 20% Cu)","gMetal":"Base Metal (Likely Cupronickel or Bronze)","lMetal":"Copper","qValue":"$0.50 - $1.50 USD","gValue":"$0.50 - $5.00 USD","lValue":"$0.01-$0.05","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"Poland","lYear":"1975","lDenom":"1","lElapsed":56.45,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_010","country":"United Kingdom","denom":"Two Shillings","year":1967,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Silver (80% silver, 20% copper)","gMetal":"Cupronickel/Base Metal Alloy","lMetal":"\u2014","qValue":"$0.50 - $1.50","gValue":"\u00a31 - \u00a310 (Highly dependent on market and specific condition)","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1967","lDenom":"1/2p","lElapsed":51.43,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_011","country":"United Kingdom","denom":"Half Penny","year":1960,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper-plated Zinc/Bronze","lMetal":"\u2014","qValue":"0.10 - 0.50 GBP","gValue":"\u00a30.50 - \u00a33.00","lValue":"C","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1960","lDenom":"Penny","lElapsed":53.8,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":3.0},{"id":"coin_012","country":"United Kingdom (British India)","denom":"One Shilling","year":1947,"qGrade":"VF-35","gGrade":"VF-25","lGrade":"MS-65","qMetal":"Silver (80% silver, 20% copper)","gMetal":"Copper-Nickel Alloy (typical for British coinage of this period)","lMetal":"\u2014","qValue":"$1.50 - $3.00 USD","gValue":"$10 - $50 (Highly dependent on final grade and market)","lValue":"10-50","qColl":"Medium","gColl":"High","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1947","lDenom":"Penny","lElapsed":53.84,"aC":"no","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_013","country":"United States","denom":"Quarter Dollar","year":1982,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Copper-Nickel Clad (75% Cu, 25% Ni outer layers, pure copper core)","gMetal":"Cupronickel (Copper-Nickel Alloy)","lMetal":"Copper-Clad-Steel","qValue":"$0.10 - $0.25","gValue":"$0.25 - $0.75","lValue":"$0.25","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United States of America","lYear":"1982","lDenom":"25 Cents","lElapsed":57.74,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_014","country":"France","denom":"20 Centimes","year":1963,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Bronze","gMetal":"Copper-toned base metal (likely bronze or copper alloy)","lMetal":"\u2014","qValue":"$0.10 - $0.50","gValue":"Low (Varies based on specific condition and market demand)","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"France","lYear":"1963","lDenom":"20","lElapsed":53.31,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":5.0},{"id":"coin_015","country":"United Kingdom","denom":"Penny","year":1912,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper (or Bronze)","lMetal":"\u2014","qValue":"$0.10 - $0.50","gValue":"$5 - $20","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1913","lDenom":"Penny","lElapsed":0.0,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_016","country":"France","denom":"5 Francs","year":1970,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-60","qMetal":"Silver (80% Ag, 20% Cu)","gMetal":"Bronze or Copper-plated base metal","lMetal":"\u2014","qValue":"$1.50 - $3.00","gValue":"Low (Varies greatly based on condition, typically a few doll","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"Canada","lYear":"1970","lDenom":"10","lElapsed":0.0,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":5.0},{"id":"coin_017","country":"Ireland","denom":"1/2p","year":1963,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (80% Ag, 20% Cu)","gMetal":"Copper/Bronze Alloy (Likely)","lMetal":"\u2014","qValue":"$0.50 - $1.50","gValue":"Low (Unless graded exceptionally high)","lValue":"\u2014","qColl":"Medium","gColl":"Medium","lColl":"\u2014","lCountry":"Ireland","lYear":"1963","lDenom":"1","lElapsed":51.07,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_018","country":"United States","denom":"Quarter Dollar","year":1980,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Copper-Nickel Clad","gMetal":"Copper-Nickel Plated Zinc","lMetal":"Copper-Plated-Steel","qValue":"$0.25 - $0.50","gValue":"$0.20 - $0.50","lValue":"$0.25-$1.00","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United States of America","lYear":"1982","lDenom":"25 Cents","lElapsed":58.62,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_019","country":"Brazil","denom":"50 Centavos","year":1994,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-60","qMetal":"Copper-Nickel","gMetal":"Base metal (likely aluminum or plated alloy)","lMetal":"Copper","qValue":"$0.10 - $0.25","gValue":"$0.05 - $0.25 USD (Highly variable based on market)","lValue":"0-10","qColl":"Low","gColl":"Low","lColl":"Medium","lCountry":"Portugal","lYear":"1994","lDenom":"50","lElapsed":54.4,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_020","country":"United Kingdom","denom":"One Penny","year":1918,"qGrade":"G-4","gGrade":"F-15","lGrade":"G-4","qMetal":"Copper","gMetal":"Bronze","lMetal":"\u2014","qValue":"$0.10 - $0.50","gValue":"$10 - $50","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1918","lDenom":"Penny","lElapsed":0.0,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_021","country":"United Kingdom","denom":"Three Pence","year":1960,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Bronze","gMetal":"Copper-alloy (Likely Bronze)","lMetal":"Copper","qValue":"0.10 - 0.25 GBP","gValue":"\u00a30.10 - \u00a30.50","lValue":"0.50-1.00","qColl":"Low","gColl":"Low","lColl":"Medium","lCountry":"United Kingdom","lYear":"1960","lDenom":"Penny","lElapsed":57.03,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":3.0},{"id":"coin_022","country":"United Kingdom","denom":"Penny","year":1912,"qGrade":"G-4","gGrade":"VG-12","lGrade":"VG-8","qMetal":"Copper","gMetal":"Copper or Bronze (Copper Alloy)","lMetal":"Copper-Nickel","qValue":"0.10 - 0.50 GBP","gValue":"$10 - $50","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1913","lDenom":"1 Penny","lElapsed":62.69,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":5.0},{"id":"coin_023","country":"Australia","denom":"Sixpence","year":1951,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (80% silver, 20% copper)","gMetal":"Bronze","lMetal":"C","qValue":"$0.50 - $2.00 AUD","gValue":"\u00a30.50 - \u00a33.00","lValue":"$10-$","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Australia","lYear":"1951","lDenom":"Penny","lElapsed":53.69,"aC":"no","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_024","country":"Portugal","denom":"200 Escudos","year":1992,"qGrade":"VF-30","gGrade":"F-12","lGrade":"G-4","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Base Metal (Likely Bronze or Copper Alloy)","lMetal":"Copper","qValue":"$2.00 - $5.00 USD","gValue":"Low","lValue":"$1-5","qColl":"Medium","gColl":"Medium","lColl":"Medium","lCountry":"Portugal","lYear":"1992","lDenom":"Escudos","lElapsed":56.04,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":10.0},{"id":"coin_025","country":"New Zealand","denom":"10 Cents","year":1988,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Copper-Nickel","lMetal":"Copper-Plated","qValue":"$0.10 - $0.50 NZD","gValue":"$0.50 - $3.00 USD","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"New Zealand","lYear":"2000","lDenom":"New Zealand 10 Cents","lElapsed":60.57,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_026","country":"United Kingdom","denom":"Halfpenny","year":1970,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Bronze","gMetal":"Copper/Bronze (or similar base metal)","lMetal":"\u2014","qValue":"$0.10 - $0.50 USD","gValue":"$1 - $10 AUD","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United States","lYear":"1907","lDenom":"Penny","lElapsed":50.22,"aC":"no","aY":"no","aD":"no","aCond":"no","delta":10.0},{"id":"coin_027","country":"Ireland","denom":"2p","year":1980,"qGrade":"G-4","gGrade":"VG-11","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper/Bronze","lMetal":"Copper","qValue":"$0.10 - $0.25","gValue":"$1 - $5 USD (Highly dependent on market and specific conditi","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1987","lDenom":"2p","lElapsed":56.2,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_028","country":"Canada","denom":"25 cents","year":2022,"qGrade":"MS-65","gGrade":"EF-40","lGrade":"MS-65","qMetal":"Nickel","gMetal":"Clad/Copper-Nickel Alloy","lMetal":"\u2014","qValue":"0.25 - 0.50 CAD","gValue":"$0.10 - $0.30","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"Canada","lYear":"1987","lDenom":"25 Cents","lElapsed":50.39,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_029","country":"United Kingdom","denom":"One Rupee","year":1911,"qGrade":"G-4","gGrade":"G-3","lGrade":"VG-8","qMetal":"Copper-Nickel (White Metal)","gMetal":"Copper/Bronze Alloy","lMetal":"Copper","qValue":"$1.00 - $3.00","gValue":"$5 - $20","lValue":"$0.50-$1.00","qColl":"Medium","gColl":"Medium","lColl":"Medium","lCountry":"United States","lYear":"1859","lDenom":"1 cent","lElapsed":63.3,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":25.0},{"id":"coin_030","country":"Slovakia","denom":"20 Halierov","year":1994,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Base Metal (Likely Aluminum or Nickel-plated Steel)","lMetal":"Copper-Plated","qValue":"$0.10 - $0.25","gValue":"$0.50 - $3.00","lValue":"$0.50-$1.00","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Czech Republic","lYear":"2000","lDenom":"20","lElapsed":56.95,"aC":"no","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_031","country":"Ireland (British Rule)","denom":"10 Pence","year":1813,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Silver (likely 90% or 80% silver, common for Irish tokens of this era)","gMetal":"Base Metal (Likely Copper or Bronze)","lMetal":"Copper","qValue":"$15 - $40","gValue":"Varies widely; typically $20 - $150+ depending on condition ","lValue":"$10-50","qColl":"Medium","gColl":"Medium","lColl":"Low","lCountry":"Ireland","lYear":"1813","lDenom":"Penny","lElapsed":55.32,"aC":"no","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_032","country":"Ireland","denom":"20p","year":1999,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Copper, 25% Nickel)","gMetal":"Copper-plated base metal","lMetal":"Copper-Nickel","qValue":"\u20ac0.10 - \u20ac0.25","gValue":"Low (Few cents to a few dollars, depending on condition)","lValue":"$0.50-$1.00","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"South Africa","lYear":"1985","lDenom":"20","lElapsed":60.71,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_033","country":"United Kingdom","denom":"Sixpence","year":1962,"qGrade":"G-4","gGrade":"VG-11","lGrade":"MS-65","qMetal":"Silver (50% silver, 50% copper)","gMetal":"Copper-plated steel or bronze alloy","lMetal":"Copper-Nickel","qValue":"$0.50 - $2.00 USD","gValue":"\u00a30.50 - \u00a33.00 (Varies greatly by specific grade and conditio","lValue":"\u00a30.50-\u00a31.00","qColl":"Medium","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1962","lDenom":"1/2p","lElapsed":58.59,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_034","country":"United Kingdom","denom":"Sixpence","year":1946,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Silver (50% silver, 50% copper)","gMetal":"Bronze/Copper Alloy","lMetal":"\u2014","qValue":"$1.50 - $3.00 USD","gValue":"$0.50 - $3.00 USD","lValue":"\u2014","qColl":"Medium","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1946","lDenom":"Penny","lElapsed":0.0,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_035","country":"United Kingdom","denom":"Sixpence","year":1959,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (50% silver, 50% copper)","gMetal":"Bronze or Copper Alloy","lMetal":"\u2014","qValue":"$0.50 - $2.00","gValue":"\u00a31 - \u00a310 (Highly dependent on actual condition and market)","lValue":"\u00a30.50-\u00a31.00","qColl":"Medium","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1956","lDenom":"Penny","lElapsed":54.07,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_036","country":"Spain","denom":"500 Pesetas","year":1988,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Base metal (likely bronze or copper alloy)","lMetal":"\u2014","qValue":"$0.10 - $0.25","gValue":"Low","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"Spain","lYear":"2000","lDenom":"PESOS","lElapsed":0.0,"aC":"no","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_037","country":"Australia","denom":"10 Cents","year":1971,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Copper/Bronze Alloy","lMetal":"\u2014","qValue":"$0.10 - $0.50 AUD","gValue":"$0.50 - $3.00 AUD","lValue":"\u2014","qColl":"Low","gColl":"Low","lColl":"\u2014","lCountry":"New Zealand","lYear":"1975","lDenom":"New Zealand 10 Cents","lElapsed":49.99,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_038","country":"United Kingdom","denom":"Sixpence","year":1954,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (50% silver, 50% copper)","gMetal":"Bronze/Copper Alloy","lMetal":"C","qValue":"0.10 - 0.25 GBP","gValue":"\u00a31 - \u00a35","lValue":"\u00a310-\u00a3","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United Kingdom","lYear":"1933","lDenom":"Penny","lElapsed":53.63,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_039","country":"United Kingdom","denom":"Half Penny","year":1971,"qGrade":"G-4","gGrade":"F-15","lGrade":"MS-65","qMetal":"Bronze (95% Copper, 5% Tin and Zinc)","gMetal":"Copper/Bronze Alloy","lMetal":"Copper","qValue":"0.10 - 0.25 GBP","gValue":"$0.50 - $3.00 (Highly dependent on specific market and condi","lValue":"$1-$5","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"New Zealand","lYear":"1967","lDenom":"Penny","lElapsed":54.1,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_040","country":"United Kingdom","denom":"Sixpence","year":1948,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (50% Silver, 50% Copper)","gMetal":"Silver","lMetal":"\u2014","qValue":"$0.50 - $2.00 USD","gValue":"$0.50 - $3.00 USD","lValue":"\u2014","qColl":"Medium","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1948","lDenom":"Penny","lElapsed":0.0,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_041","country":"United States","denom":"Cent","year":1999,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"95% Copper, 5% Zinc","gMetal":"Copper-plated zinc","lMetal":"\u2014","qValue":"$0.01 - $0.05","gValue":"$0.01 - $0.05","lValue":"$0.01","qColl":"Low","gColl":"Low","lColl":"\u2014","lCountry":"United States of America","lYear":"1982","lDenom":"Penny","lElapsed":54.22,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_042","country":"United Kingdom","denom":"Penny","year":1898,"qGrade":"G-4","gGrade":"G-3","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper/Bronze","lMetal":"\u2014","qValue":"$0.50 - $2.00","gValue":"\u00a30.50 - \u00a33.00 (Highly dependent on specific date and conditi","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1900","lDenom":"Penny","lElapsed":0.0,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":5.0},{"id":"coin_043","country":"United Kingdom","denom":"Halfpenny","year":1911,"qGrade":"G-4","gGrade":"VG-10","lGrade":"G-4","qMetal":"Copper","gMetal":"Bronze/Copper Alloy","lMetal":"\u2014","qValue":"$0.10 - $0.50","gValue":"$0.05 - $0.25","lValue":"$10-$30","qColl":"Low","gColl":"Low","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1906","lDenom":"1/2d","lElapsed":53.57,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_044","country":"United Kingdom","denom":"Three Pence","year":1967,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Bronze","gMetal":"Bronze/Copper Alloy","lMetal":"Copper","qValue":"0.10 - 0.25 GBP","gValue":"$0.50 - $3.00 USD","lValue":"1-10","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United Kingdom","lYear":"1967","lDenom":"3 pence","lElapsed":67.41,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_045","country":"United Kingdom","denom":"Farthing","year":1942,"qGrade":"G-4","gGrade":"G-3","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper/Bronze Alloy","lMetal":"\u2014","qValue":"0.10 - 0.50 GBP","gValue":"\u00a30.50 - \u00a33.00 (Highly dependent on specific market and buyer","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1942","lDenom":"1/2p","lElapsed":0.0,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_046","country":"United Kingdom","denom":"Sixpence","year":1951,"qGrade":"G-4","gGrade":"F-12","lGrade":"G-4","qMetal":"Bronze (95% Copper, 5% Tin and Zinc)","gMetal":"Copper-plated steel or Bronze Alloy","lMetal":"\u2014","qValue":"$0.50 - $1.50 USD","gValue":"$0.50 - $2.00 USD","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1933","lDenom":"Penny","lElapsed":0.0,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_047","country":"United Kingdom","denom":"Penny","year":1912,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper/Bronze Alloy","lMetal":"Copper","qValue":"$0.50 - $1.50","gValue":"$0.50 - $5.00 USD","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1913","lDenom":"Penny","lElapsed":54.58,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_048","country":"Kenya","denom":"One Shilling","year":1973,"qGrade":"VF-30","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Copper-Nickel","gMetal":"Copper-plated base metal (likely bronze or zinc alloy)","lMetal":"Copper","qValue":"$0.50 - $2.00 USD","gValue":"$1 - $5 (Highly dependent on condition and market)","lValue":"$1-$5","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Kenya","lYear":"1973","lDenom":"1 Shilling","lElapsed":54.36,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_049","country":"Jersey","denom":"One Fourth of a Shilling","year":1957,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Bronze","gMetal":"Copper-alloy (likely bronze or brass)","lMetal":"\u2014","qValue":"$0.50 - $1.50","gValue":"$5 - $20 USD","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1957","lDenom":"Penny","lElapsed":0.0,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_050","country":"Poland","denom":"20 Groszy","year":2013,"qGrade":"VF-30","gGrade":"VF-25","lGrade":"MS-60","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Base Metal Alloy (Likely Cupronickel)","lMetal":"Copper","qValue":"0.10 - 0.25 PLN","gValue":"$0.10 - $0.50 (Highly dependent on market and condition)","lValue":"$0.50-$1.00","qColl":"Low","gColl":"Low","lColl":"Medium","lCountry":"Poland","lYear":"1990s","lDenom":"Grosz","lElapsed":55.18,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_051","country":"Belgium","denom":"1 Franc","year":1977,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Aluminum","gMetal":"Aluminum or Cupronickel (typical for Belgian coinage of this era)","lMetal":"C","qValue":"$0.10 - $0.25","gValue":"$0.50 - $2.00 USD","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Belgium","lYear":"1993","lDenom":"Euro","lElapsed":51.91,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_052","country":"United States","denom":"Nickel","year":1999,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"75% Copper, 25% Nickel","gMetal":"Copper-Nickel Plated Steel","lMetal":"Copper","qValue":"$0.10 - $0.25","gValue":"$0.50 - $2.00","lValue":"$0.05-$0.10","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United States of America","lYear":"1943","lDenom":"5 Cents","lElapsed":61.28,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_053","country":"United Kingdom","denom":"One Shilling","year":1902,"qGrade":"G-4","gGrade":"G-3","lGrade":"G-4","qMetal":"Silver (92.5% silver, 7.5% copper)","gMetal":"Copper/Bronze Alloy","lMetal":"Copper","qValue":"$15 - $35 USD","gValue":"$5 - $20 (Highly dependent on specific date and condition)","lValue":"\u2014","qColl":"Medium","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1933","lDenom":"Penny","lElapsed":53.89,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":15.0},{"id":"coin_054","country":"Canada","denom":"Quarter","year":1973,"qGrade":"VF-30","gGrade":"VF-25","lGrade":"MS-65","qMetal":"80% Silver, 20% Copper","gMetal":"Cupro-nickel (Estimated)","lMetal":"C","qValue":"$1.50 - $3.00 CAD","gValue":"$0.50 - $2.00 USD","lValue":"$1.00 - $5.00","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Canada","lYear":"1973","lDenom":"25","lElapsed":53.2,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_055","country":"United Kingdom","denom":"One Penny","year":1974,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper-plated Zinc or Bronze","lMetal":"C","qValue":"0.01 - 0.05 GBP","gValue":"\u00a30.10 - \u00a30.50","lValue":"10-20","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United Kingdom","lYear":"1973","lDenom":"Penny","lElapsed":52.61,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_056","country":"Isle of Man","denom":"2 Pence","year":1990,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper/Bronze Alloy","lMetal":"C","qValue":"0.10 - 0.25 GBP","gValue":"$0.50 - $3.00 USD","lValue":"C","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1930","lDenom":"Penny","lElapsed":52.29,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_057","country":"Belgium","denom":"1 Franc","year":1980,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Aluminum","gMetal":"Copper/Bronze","lMetal":"C","qValue":"$0.10 - $0.25","gValue":"$5 - $20 USD","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Belgium","lYear":"1995","lDenom":"Euro","lElapsed":52.32,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":5.0},{"id":"coin_058","country":"Brazil","denom":"1 Cent","year":2002,"qGrade":"VF-30","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel (CuNi)","gMetal":"Copper-toned alloy","lMetal":"Copper-Plated Steel","qValue":"$0.10 - $0.25","gValue":"Low","lValue":"0.01-0.05","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Monaco","lYear":"2005","lDenom":"Euro","lElapsed":55.49,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":5.0},{"id":"coin_059","country":"Brazil","denom":"25 Centavos","year":2011,"qGrade":"G-4","gGrade":"VG-15","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Base Metal (Likely Aluminum or Copper-Nickel Alloy)","lMetal":"Copper","qValue":"$0.10 - $0.25 USD","gValue":"$0.05 - $0.25 USD","lValue":"$0.01-$0.05","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"Brazil","lYear":"\u2014","lDenom":"1","lElapsed":60.42,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":5.0},{"id":"coin_060","country":"United Kingdom","denom":"Halfpenny","year":1860,"qGrade":"G-4","gGrade":"G-3","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper (or Copper-Bronze Alloy)","lMetal":"Copper","qValue":"$1.00 - $3.00","gValue":"$1 - $10 (Highly dependent on specific market and condition)","lValue":"$1-$5","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"New Zealand","lYear":"1937","lDenom":"Penny","lElapsed":54.85,"aC":"no","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_061","country":"Brazil","denom":"50 Centavos","year":2017,"qGrade":"VF-30","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel (CuNi)","gMetal":"Cupro-nickel or Aluminum Alloy (Standard circulating coin metal)","lMetal":"Copper-Plated Steel","qValue":"$0.10 - $0.25 USD","gValue":"Low (Near face value or less)","lValue":"0.01-0.05","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"Brazil","lYear":"2017","lDenom":"C-1","lElapsed":66.8,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":5.0},{"id":"coin_062","country":"Ireland","denom":"20p","year":1986,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Copper, 25% Nickel)","gMetal":"Copper or Bronze","lMetal":"Copper","qValue":"0.10 - 0.25 EUR","gValue":"Low","lValue":"$1-$5","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"South Africa","lYear":"1973","lDenom":"20","lElapsed":54.24,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":5.0},{"id":"coin_063","country":"Brazil","denom":"10 Centavos","year":2010,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Plated Steel","gMetal":"Copper-plated steel or base metal alloy","lMetal":"Copper-Plated Steel","qValue":"$0.10 - $0.50","gValue":"Under $1 USD (due to low face value and condition)","lValue":"0.10-0.50","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"Portugal","lYear":"2010","lDenom":"Euro","lElapsed":54.61,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_064","country":"Ireland","denom":"50c","year":1969,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel","gMetal":"Base metal (likely Nickel-plated steel)","lMetal":"Copper","qValue":"$0.10 - $0.25","gValue":"\u00a30.05 - \u00a30.20","lValue":"\u2014","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"Ireland","lYear":"1980","lDenom":"\u2014","lElapsed":52.78,"aC":"no","aY":"no","aD":"no","aCond":"no","delta":15.0},{"id":"coin_065","country":"United States","denom":"One Cent","year":1982,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"95% Copper, 5% Zinc (Copper Plated Zinc)","gMetal":"Copper-plated zinc","lMetal":"Copper","qValue":"$0.05 - $0.10","gValue":"$0.05 - $0.25","lValue":"$0.01-$0.05","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United States","lYear":"1959","lDenom":"Penny","lElapsed":55.0,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_066","country":"Ireland","denom":"20p","year":1986,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-Nickel","gMetal":"Copper-plated steel or bronze alloy","lMetal":"Copper","qValue":"0.10 - 0.25 EUR","gValue":"Low (USD $0.50 - $3.00, depending on condition and market)","lValue":"10-50","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Poland","lYear":"1980","lDenom":"\u2014","lElapsed":53.62,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":5.0},{"id":"coin_067","country":"United Kingdom","denom":"Half Penny","year":1971,"qGrade":"G-4","gGrade":"VG-11","lGrade":"MS-65","qMetal":"Bronze","gMetal":"Copper/Bronze Alloy","lMetal":"Copper","qValue":"0.05 - 0.10 GBP","gValue":"$0.50 - $2.00","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United Kingdom","lYear":"1971","lDenom":"Penny","lElapsed":57.62,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_068","country":"Ireland","denom":"1p","year":1971,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Bronze","gMetal":"Copper/Bronze","lMetal":"Copper","qValue":"0.01 - 0.05","gValue":"Low","lValue":"\u20ac1-5","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Monaco","lYear":"2005","lDenom":"1","lElapsed":57.08,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":10.0},{"id":"coin_069","country":"Ireland","denom":"5p","year":1974,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Nickel-brass","gMetal":"Base metal (likely bronze or copper alloy)","lMetal":"C","qValue":"$0.10 - $0.25","gValue":"$0.10 - $0.50 USD","lValue":"C","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"Ireland","lYear":"1974","lDenom":"Penny","lElapsed":53.16,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_070","country":"United States","denom":"Cent","year":1981,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper-plated zinc","gMetal":"Copper (or copper-plated zinc)","lMetal":"Copper","qValue":"$0.05 - $0.10","gValue":"$0.05 - $0.25","lValue":"$0.01-$0.05","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United States of America","lYear":"1982","lDenom":"Penny","lElapsed":55.81,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_071","country":"New Zealand","denom":"Half Cent","year":1970,"qGrade":"G-4","gGrade":"F-12","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper-plated steel (or bronze alloy)","lMetal":"Copper","qValue":"$0.10 - $0.50 NZD","gValue":"\u00a30.05 - \u00a30.20 (Highly dependent on specific market and buyer","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1933","lDenom":"1/2","lElapsed":60.85,"aC":"no","aY":"no","aD":"no","aCond":"no","delta":3.0},{"id":"coin_072","country":"Brazil","denom":"1 Centavo","year":2016,"qGrade":"G-4","gGrade":"G-4","lGrade":"MS-65","qMetal":"Copper-plated steel","gMetal":"Base metal (Likely copper-plated steel, typical for modern Brazilian coinage)","lMetal":"\u2014","qValue":"$0.10 - $0.50 USD","gValue":"$0.05 - $0.20 USD","lValue":"\u2014","qColl":"Low","gColl":"Low","lColl":"\u2014","lCountry":"Brazil","lYear":"2013","lDenom":"1 Cent","lElapsed":49.95,"aC":"yes","aY":"no","aD":"no","aCond":"yes","delta":5.0},{"id":"coin_073","country":"Ireland","denom":"20p","year":1992,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Nickel-brass","gMetal":"Copper-plated steel or Bronze/Copper Alloy","lMetal":"Copper","qValue":"0.10 - 0.25 EUR","gValue":"\u00a30.05 - \u00a30.20 (Highly dependent on condition and buyer)","lValue":"$0.50-$1.00","qColl":"Low","gColl":"Medium","lColl":"Low","lCountry":"South Africa","lYear":"1960s","lDenom":"\u2014","lElapsed":56.98,"aC":"no","aY":"no","aD":"yes","aCond":"no","delta":3.0},{"id":"coin_074","country":"Ireland","denom":"10p","year":1993,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-60","qMetal":"Cupro-nickel","gMetal":"Cupronickel","lMetal":"Copper-Plated","qValue":"0.10 - 0.25 EUR","gValue":"Low","lValue":"10-50","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"Ireland","lYear":"1980s","lDenom":"\u2014","lElapsed":54.34,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_075","country":"United States","denom":"Cent","year":2006,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"95% Copper, 5% Zinc","gMetal":"Copper-plated zinc","lMetal":"Copper\u00a0\u2026","qValue":"$0.10 - $0.15","gValue":"$0.05 - $0.25","lValue":"$0.01\u00a0\u2026","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United States","lYear":"1982","lDenom":"Penny","lElapsed":56.68,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":5.0},{"id":"coin_076","country":"United Kingdom","denom":"10 pence","year":1997,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Nickel-brass (copper, nickel, and zinc)","gMetal":"Base Metal (Likely Nickel or Cupro-Nickel)","lMetal":"C","qValue":"0.10 - 0.25 GBP","gValue":"\u00a30.10 - \u00a30.50 (Highly dependent on current market and specif","lValue":"I","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1980","lDenom":"10p","lElapsed":57.02,"aC":"no","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_077","country":"Ireland","denom":"2p","year":1995,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper/Bronze","lMetal":"Copper","qValue":"0.05 - 0.10 EUR","gValue":"$0.50 - $3.00 (Highly dependent on market and condition)","lValue":"\u20ac0.50-\u20ac1.00","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1999","lDenom":"Denomination","lElapsed":57.25,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_078","country":"Ireland","denom":"10 Cents","year":1971,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Copper, 25% Nickel)","gMetal":"Copper/Bronze","lMetal":"C","qValue":"$0.10 - $0.50","gValue":"$0.50 - $5.00","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1980","lDenom":"penny","lElapsed":56.13,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":5.0},{"id":"coin_079","country":"United Kingdom","denom":"1 Penny","year":1971,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper-plated Zinc (typical for 1971 US pennies)","lMetal":"Copper","qValue":"0.01 - 0.05 GBP","gValue":"Pennies to a few dollars (value is highly dependent on profe","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United Kingdom","lYear":"1953","lDenom":"1","lElapsed":56.1,"aC":"no","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_080","country":"United Kingdom","denom":"Sixpence","year":1964,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (80% silver, 20% copper)","gMetal":"Cupronickel","lMetal":"\u2014","qValue":"$0.50 - $1.50 USD","gValue":"$1 - $5 USD","lValue":"\u00a310-\u00a320","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1953","lDenom":"1/2p","lElapsed":57.38,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_081","country":"Ireland","denom":"2 pence","year":1966,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Copper, 25% Nickel)","gMetal":"Copper/Bronze (Likely copper-plated base metal)","lMetal":"C","qValue":"$0.10 - $0.25 USD","gValue":"$0.50 - $3.00 USD","lValue":"A","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United Kingdom","lYear":"1983","lDenom":"2p","lElapsed":55.4,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_082","country":"Ireland","denom":"1 Shilling","year":1961,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (80% Ag, 20% Cu)","gMetal":"\u2014","lMetal":"C","qValue":"$1.50 - $3.00 USD","gValue":"Low","lValue":"\u2014","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1920","lDenom":"Penny","lElapsed":55.81,"aC":"no","aY":"yes","aD":"no","aCond":"no","delta":35.0},{"id":"coin_083","country":"Ireland","denom":"1 Shilling","year":1963,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (80% silver, 20% copper)","gMetal":"Silver-toned base metal","lMetal":"C","qValue":"$1.50 - $3.00 USD","gValue":"$5 - $20 (Highly dependent on actual metal content and condi","lValue":"\u2014","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1920","lDenom":"Penny","lElapsed":56.39,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":5.0},{"id":"coin_084","country":"United States","denom":"Cent","year":1994,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"95% Copper, 5% Zinc","gMetal":"Copper-plated Zinc (Penny)","lMetal":"Copper","qValue":"$0.05 - $0.10","gValue":"$0.05 - $0.25","lValue":"$0.01-$0.05","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United States","lYear":"1982","lDenom":"Penny","lElapsed":57.27,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_085","country":"New Zealand","denom":"Half Penny","year":1971,"qGrade":"G-4","gGrade":"VG-12","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper-alloy (Bronze/Copper-toned)","lMetal":"Copper","qValue":"$0.10 - $0.50 NZD","gValue":"$0.50 - $1.50","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1933","lDenom":"1","lElapsed":57.8,"aC":"no","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_086","country":"Ireland","denom":"5p","year":1961,"qGrade":"G-4","gGrade":"VG-10","lGrade":"G-4","qMetal":"Nickel-brass","gMetal":"Base metal (likely bronze or copper alloy)","lMetal":"Copper","qValue":"$0.50 - $1.00","gValue":"$0.50 - $3.00 USD","lValue":"1-10","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1965","lDenom":"\u2014","lElapsed":61.24,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_087","country":"Ireland","denom":"10p","year":1964,"qGrade":"G-4","gGrade":"VF-25","lGrade":"MS-65","qMetal":"Cupro-Nickel","gMetal":"Nickel/Cupro-Nickel (Estimated)","lMetal":"Copper","qValue":"$0.50 - $1.50","gValue":"$0.50 - $3.00 USD","lValue":"\u00a310-\u00a320","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1980s","lDenom":"\u2014","lElapsed":54.37,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_088","country":"Ireland","denom":"2 pence","year":1980,"qGrade":"G-4","gGrade":"VG-10","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper or Bronze","lMetal":"Copper","qValue":"0.10 - 0.25 EUR","gValue":"Low (Requires expert confirmation)","lValue":"0-10","qColl":"Low","gColl":"Medium","lColl":"Low","lCountry":"United Kingdom","lYear":"1983","lDenom":"\u2014","lElapsed":59.64,"aC":"no","aY":"no","aD":"no","aCond":"no","delta":25.0},{"id":"coin_089","country":"Ireland","denom":"1 Shilling","year":1962,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Silver (50% silver, 50% copper)","gMetal":"Cupronickel","lMetal":"Copper","qValue":"$1.50 - $3.00 USD","gValue":"\u00a31 - \u00a35","lValue":"\u20ac10-\u20ac50","qColl":"Medium","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1933","lDenom":"Penny","lElapsed":55.47,"aC":"no","aY":"yes","aD":"no","aCond":"no","delta":5.0},{"id":"coin_090","country":"Ireland","denom":"1p","year":1971,"qGrade":"G-4","gGrade":"VF-20","lGrade":"G-4","qMetal":"Copper","gMetal":"Copper/Bronze","lMetal":"Copper","qValue":"0.10 - 0.50 EUR","gValue":"$0.50 - $3.00 USD (Highly dependent on condition and market)","lValue":"1-5","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"Ireland","lYear":"1980s","lDenom":"\u2014","lElapsed":54.59,"aC":"yes","aY":"no","aD":"no","aCond":"no","delta":0.0},{"id":"coin_091","country":"Ireland","denom":"5p","year":1969,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Copper-Nickel (75% Cu, 25% Ni)","gMetal":"Cupro-nickel (Estimated)","lMetal":"\u2014","qValue":"$0.10 - $0.25","gValue":"\u00a30.10 - \u00a30.50 (Highly dependent on market and condition)","lValue":"$1-$5","qColl":"Low","gColl":"Low","lColl":"\u2014","lCountry":"South Africa","lYear":"1985","lDenom":"5","lElapsed":54.5,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_092","country":"Ireland","denom":"1/2 Penny","year":1971,"qGrade":"G-4","gGrade":"G-4","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper or Bronze","lMetal":"Copper","qValue":"$0.10 - $0.50","gValue":"Low (Varies greatly based on specific date and condition)","lValue":"\u20ac0.50-\u20ac1.00","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Ireland","lYear":"1980","lDenom":"Penny","lElapsed":57.82,"aC":"yes","aY":"no","aD":"no","aCond":"yes","delta":25.0},{"id":"coin_093","country":"United Kingdom","denom":"Two Pence","year":2011,"qGrade":"G-4","gGrade":"VF-20","lGrade":"VF-30","qMetal":"Copper-Nickel (White metal) clad in copper","gMetal":"Copper-plated steel (or Copper Alloy)","lMetal":"Copper","qValue":"0.05 - 0.10 GBP","gValue":"\u00a30.05 - \u00a30.15","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1971","lDenom":"2 Pence","lElapsed":57.73,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_094","country":"United Kingdom","denom":"5 pence","year":2002,"qGrade":"G-4","gGrade":"F-12","lGrade":"MS-65","qMetal":"Nickel-brass","gMetal":"Cupronickel (Likely)","lMetal":"C","qValue":"0.05 - 0.10 GBP","gValue":"\u00a30.50 - \u00a32.00 (Highly dependent on specific condition and ma","lValue":"C","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United Kingdom","lYear":"1993","lDenom":"penny","lElapsed":54.55,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_095","country":"Ireland","denom":"One Penny","year":2011,"qGrade":"VF-30","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper-plated steel or copper alloy","lMetal":"C","qValue":"\u20ac0.05 - \u20ac0.10","gValue":"\u00a30.01 - \u00a30.05","lValue":"1-5","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United Kingdom","lYear":"1997","lDenom":"Penny","lElapsed":54.16,"aC":"no","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_096","country":"United Kingdom","denom":"Ten Pence","year":1992,"qGrade":"VF-30","gGrade":"VF-25","lGrade":"MS-65","qMetal":"Nickel-brass","gMetal":"Cupro-Nickel (Likely)","lMetal":"Copper","qValue":"0.10 - 0.25 GBP","gValue":"\u00a30.05 - \u00a30.20","lValue":"\u20ac10-\u20ac20","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"Belgium","lYear":"1993","lDenom":"Euro","lElapsed":54.63,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0},{"id":"coin_097","country":"United Kingdom","denom":"Two Pence","year":2004,"qGrade":"G-4","gGrade":"VG-10","lGrade":"VF-30","qMetal":"Copper-Nickel (75% Copper, 25% Nickel)","gMetal":"Copper-plated steel or Bronze alloy","lMetal":"Copper-Nickel","qValue":"0.01 - 0.05 GBP","gValue":"\u00a30.05 - \u00a30.15","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Medium","lColl":"Medium","lCountry":"United Kingdom","lYear":"1971","lDenom":"2 pence","lElapsed":57.01,"aC":"yes","aY":"no","aD":"yes","aCond":"no","delta":3.0},{"id":"coin_098","country":"United Kingdom","denom":"Two Pence","year":2011,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Cupro-nickel","gMetal":"Copper-plated steel/brass","lMetal":"C","qValue":"0.05 - 0.10 GBP","gValue":"\u00a30.10 - \u00a30.50","lValue":"\u00a31-\u00a35","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United Kingdom","lYear":"1999","lDenom":"Penny","lElapsed":54.05,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_099","country":"New Zealand","denom":"One Penny","year":1973,"qGrade":"G-4","gGrade":"VG-10","lGrade":"MS-65","qMetal":"Copper","gMetal":"Copper/Bronze","lMetal":"Copper-Plated-Steel","qValue":"$0.10 - $0.50 NZD","gValue":"\u00a30.10 - \u00a30.50","lValue":"\u00a30.50-\u00a31.00","qColl":"Low","gColl":"Low","lColl":"High","lCountry":"United Kingdom","lYear":"1971","lDenom":"1","lElapsed":58.74,"aC":"no","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_100","country":"United States","denom":"One Cent","year":1968,"qGrade":"G-4","gGrade":"VG-15","lGrade":"MS-65","qMetal":"95% Copper, 5% Zinc","gMetal":"Copper-plated zinc (or bronze alloy)","lMetal":"Copper","qValue":"$0.10 - $0.25","gValue":"$0.05 - $0.25","lValue":"$0.01-$0.05","qColl":"Low","gColl":"Medium","lColl":"High","lCountry":"United States","lYear":"1982","lDenom":"Penny","lElapsed":58.4,"aC":"yes","aY":"yes","aD":"yes","aCond":"no","delta":0.0},{"id":"coin_101","country":"Ireland","denom":"5 pence","year":1970,"qGrade":"G-4","gGrade":"VF-20","lGrade":"MS-65","qMetal":"Nickel-brass","gMetal":"Cupronickel","lMetal":"\u2014","qValue":"0.10 - 0.25 EUR","gValue":"\u00a30.05 - \u00a30.20 (Highly dependent on actual condition)","lValue":"\u2014","qColl":"Low","gColl":"Medium","lColl":"\u2014","lCountry":"United Kingdom","lYear":"1983","lDenom":"5p","lElapsed":0.0,"aC":"yes","aY":"yes","aD":"no","aCond":"no","delta":0.0}];
+const CONTESTED=["coin_026","coin_030","coin_060","coin_073","coin_085","coin_088"];
+const PAGE_SIZE=10;
+let page=0,filtered=[...COINS],modalIdx=0;
+
+function applyFilters(){
+  const country=document.getElementById("filterCountry").value;
+  const mode=document.getElementById("filterAgree").value;
+  filtered=COINS.filter(c=>{
+    if(country&&c.country!==country)return false;
+    if(mode==="country_no"&&c.aC!=="no")return false;
+    if(mode==="year_no"&&c.aY!=="no")return false;
+    if(mode==="denom_no"&&c.aD!=="no")return false;
+    if(mode==="cond_yes"&&c.aCond!=="yes")return false;
+    if(mode==="delta"&&c.delta===0)return false;
+    if(mode==="llama_ms65"&&c.lGrade!=="MS-65")return false;
+    if(mode==="llama_zero"&&c.lElapsed!==0)return false;
+    if(mode==="contested"&&!CONTESTED.includes(c.id))return false;
+    return true;
+  });
+  page=0;renderTable();
+}
+
+function changePage(dir){
+  const max=Math.ceil(filtered.length/PAGE_SIZE)-1;
+  page=Math.max(0,Math.min(max,page+dir));
+  renderTable();
+}
+
+function tick(v){return v==="yes"?"<span class=\"agree-yes\">&#10003;</span>":"<span class=\"agree-no\">&#10007;</span>";}
+
+function renderTable(){
+  const start=page*PAGE_SIZE,slice=filtered.slice(start,start+PAGE_SIZE);
+  const totalPages=Math.max(1,Math.ceil(filtered.length/PAGE_SIZE));
+  document.getElementById("resultCount").textContent=filtered.length+" coin"+(filtered.length!==1?"s":"");
+  document.getElementById("pgInfo").textContent="Page "+(page+1)+" of "+totalPages;
+  document.getElementById("pgPrev").disabled=page===0;
+  document.getElementById("pgNext").disabled=page>=totalPages-1;
+  if(!slice.length){document.getElementById("tableBody").innerHTML="<tr class=\"empty-row\"><td colspan=\"13\">No coins match the selected filters.</td></tr>";return;}
+  document.getElementById("tableBody").innerHTML=slice.map(c=>{
+    const idx=COINS.indexOf(c);
+    const dc=c.delta>0?"<span style=\"font-family:monospace;font-size:11px;color:#8A6010\">"+c.delta+"</span>":"<span style=\"color:var(--text-muted);font-size:12px\">&mdash;</span>";
+    const isContested=CONTESTED.includes(c.id)?" style=\"background:#FAEEDA\"":" ";
+    return "<tr"+isContested+"><td><span class=\"coin-id\">"+c.id+"</span></td><td>"+c.country+"</td><td style=\"color:var(--text-muted);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap\">"+c.denom+"</td><td style=\"font-family:monospace;font-size:12px\">"+c.year+"</td><td><span class=\"grade-badge gb-q\">"+c.qGrade+"</span></td><td><span class=\"grade-badge gb-g\">"+c.gGrade+"</span></td><td><span class=\"grade-badge gb-l\">"+c.lGrade+"</span></td><td class=\"center\">"+tick(c.aC)+"</td><td class=\"center\">"+tick(c.aY)+"</td><td class=\"center\">"+tick(c.aD)+"</td><td class=\"center\">"+tick(c.aCond)+"</td><td class=\"center\">"+dc+"</td><td class=\"center\"><button class=\"view-btn\" onclick=\"openModal("+idx+")\">View</button></td></tr>";
+  }).join("");
+}
+
+function openModal(idx){modalIdx=idx;populateModal(idx);document.getElementById("modalOverlay").classList.add("open");document.body.style.overflow="hidden";}
+function closeModal(){document.getElementById("modalOverlay").classList.remove("open");document.body.style.overflow="";}
+function handleOverlayClick(e){if(e.target===document.getElementById("modalOverlay"))closeModal();}
+function navigateCoin(dir){const n=modalIdx+dir;if(n>=0&&n<COINS.length){modalIdx=n;populateModal(n);}}
+function pill(v){return "<span class=\"agree-pill "+(v==="yes"?"pill-yes":"pill-no")+"\">"+( v==="yes"?"Agree":"Differ")+"</span>";}
+
+function loadImage(wrapId,errorId,src){
+  const wrap=document.getElementById(wrapId),err=document.getElementById(errorId);
+  const ex=wrap.querySelector("img");if(ex)ex.remove();
+  err.style.display="none";
+  const img=document.createElement("img");img.alt=src;
+  img.onerror=function(){err.style.display="block";img.remove();};
+  img.src=src;wrap.appendChild(img);
+}
+
+function populateModal(idx){
+  const c=COINS[idx];
+  document.getElementById("modalCoinId").textContent=c.id.toUpperCase().replace("_"," ");
+  document.getElementById("modalCoinTitle").textContent=c.country+" \u2014 "+c.denom;
+  document.getElementById("modalCoinSub").textContent="Issued "+c.year+(c.delta>0?" \u00b7 Confidence delta: "+c.delta:"")+(CONTESTED.includes(c.id)?" \u00b7 Contested: all three models disagreed on country":"");
+  loadImage("imgWrap1","imgError1",c.id+"_A.jpeg");
+  loadImage("imgWrap2","imgError2",c.id+"_B.jpeg");
+  const rows=[
+    {f:"Condition",q:c.qGrade,g:c.gGrade,l:c.lGrade,a:c.aCond},
+    {f:"Metal",q:c.qMetal,g:c.gMetal,l:c.lMetal,a:null},
+    {f:"Value",q:c.qValue,g:c.gValue,l:c.lValue,a:null},
+    {f:"Collector",q:c.qColl,g:c.gColl,l:c.lColl,a:null},
+    {f:"Country",q:c.country,g:c.country,l:c.lCountry,a:c.aC},
+    {f:"Year",q:String(c.year),g:String(c.year),l:c.lYear,a:c.aY},
+    {f:"Denom.",q:c.denom,g:c.denom,l:c.lDenom,a:c.aD},
+  ];
+  document.getElementById("modalRows").innerHTML=rows.map(r=>"<div class=\"mc-row\"><div>"+r.f+"</div><div class=\"mc-q\">"+r.q+(r.a!==null?pill(r.a):"")+
+  " </div><div class=\"mc-g\">"+r.g+"</div><div>"+r.l+"</div></div>").join("");
+  document.getElementById("btnPrev").disabled=idx===0;
+  document.getElementById("btnNext").disabled=idx===COINS.length-1;
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")closeModal();
+  if(document.getElementById("modalOverlay").classList.contains("open")){
+    if(e.key==="ArrowLeft")navigateCoin(-1);
+    if(e.key==="ArrowRight")navigateCoin(1);
+  }
+});
+
+renderTable();
+</script>
+</body>
+</html>
